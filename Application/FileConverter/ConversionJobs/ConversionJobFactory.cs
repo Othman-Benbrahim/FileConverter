@@ -2,82 +2,47 @@
 
 namespace FileConverter.ConversionJobs
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FileConverter.ConversionEngines;
+
     public static class ConversionJobFactory
     {
+        private static ConversionEngineRegistry engineRegistry = ConversionEngineRegistry.CreateDefault();
+
+        public static ConversionEngineRegistry EngineRegistry
+        {
+            get => engineRegistry;
+            set => engineRegistry = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public static IEnumerable<ConversionJob> CreateJobs(ConversionPreset conversionPreset, IReadOnlyList<string> inputFilePaths)
+        {
+            return EngineRegistry.CreateJobs(conversionPreset, inputFilePaths);
+        }
+
         public static ConversionJob Create(ConversionPreset conversionPreset, string[] inputFilePaths)
         {
-            if (conversionPreset.OutputType != OutputType.PdfMerge)
+            ConversionJob[] jobs = CreateJobs(conversionPreset, inputFilePaths).ToArray();
+            if (jobs.Length != 1)
             {
-                throw new System.NotSupportedException("A multi-file conversion job is only supported for PDF merging.");
+                throw new InvalidOperationException("This overload requires an engine that creates exactly one batch job.");
             }
 
-            return new ConversionJob_PdfMerge(conversionPreset, inputFilePaths);
+            return jobs[0];
         }
 
         public static ConversionJob Create(ConversionPreset conversionPreset, string inputFilePath)
         {
-            string inputFileExtension = System.IO.Path.GetExtension(inputFilePath);
-            inputFileExtension = inputFileExtension.ToLowerInvariant().Substring(1, inputFileExtension.Length - 1);
-            if (inputFileExtension == "cda")
+            ConversionJob[] jobs = CreateJobs(conversionPreset, new[] { inputFilePath }).ToArray();
+            if (jobs.Length != 1)
             {
-                return new ConversionJob_ExtractCDA(conversionPreset, inputFilePath);    
+                throw new InvalidOperationException("This overload requires an engine that creates exactly one job.");
             }
 
-            if (inputFileExtension == "pdf" &&
-                (conversionPreset.OutputType == OutputType.Docx || conversionPreset.OutputType == OutputType.Md || conversionPreset.OutputType == OutputType.Txt))
-            {
-                return new ConversionJob_Ghostscript(conversionPreset, inputFilePath);
-            }
-
-            if (inputFileExtension == "pdf" && conversionPreset.OutputType == OutputType.PdfSplit)
-            {
-                return new ConversionJob_PdfSplit(conversionPreset, inputFilePath);
-            }
-
-            if (inputFileExtension == "txt" && conversionPreset.OutputType == OutputType.Md)
-            {
-                return new ConversionJob_Markdown(conversionPreset, inputFilePath);
-            }
-
-            if (inputFileExtension == "docx" || inputFileExtension == "odt" || inputFileExtension == "doc")
-            {
-                return new ConversionJob_Word(conversionPreset, inputFilePath);
-            }
-
-            if (inputFileExtension == "xlsx" || inputFileExtension == "ods" || inputFileExtension == "xls")
-            {
-                return new ConversionJob_Excel(conversionPreset, inputFilePath);
-            }
-
-            if (inputFileExtension == "pptx" || inputFileExtension == "odp" || inputFileExtension == "ppt")
-            {
-                return new ConversionJob_PowerPoint(conversionPreset, inputFilePath);
-            }
-
-            if (conversionPreset.OutputType == OutputType.Ico)
-            {
-                return new ConversionJob_Ico(conversionPreset, inputFilePath);
-            }
-
-            if (conversionPreset.OutputType == OutputType.Gif)
-            {
-                return new ConversionJob_Gif(conversionPreset, inputFilePath);
-            }
-
-            if (conversionPreset.OutputType == OutputType.Pdf)
-            {
-                return new ConversionJob_ImageMagick(conversionPreset, inputFilePath);
-            }
-
-            if (conversionPreset.OutputType == OutputType.Avif ||
-                conversionPreset.OutputType == OutputType.Jpg ||
-                conversionPreset.OutputType == OutputType.Png ||
-                conversionPreset.OutputType == OutputType.Webp)
-            {
-                return new ConversionJob_ImageMagick(conversionPreset, inputFilePath);
-            }
-            
-            return new ConversionJob_FFMPEG(conversionPreset, inputFilePath);
+            return jobs[0];
         }
     }
 }
