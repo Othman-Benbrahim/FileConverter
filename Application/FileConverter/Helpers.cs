@@ -225,7 +225,10 @@ namespace FileConverter
                     return category == InputCategoryNames.Image || category == InputCategoryNames.Video || category == InputCategoryNames.AnimatedImage;
 
                 case OutputType.Docx:
+                case OutputType.Md:
                 case OutputType.Pdf:
+                case OutputType.PdfMerge:
+                case OutputType.PdfSplit:
                 case OutputType.Txt:
                     return category == InputCategoryNames.Document ||
                            (outputType == OutputType.Pdf && category == InputCategoryNames.Image);
@@ -238,12 +241,32 @@ namespace FileConverter
         public static bool IsInputExtensionCompatibleWithOutputType(OutputType outputType, string extension)
         {
             extension = extension.TrimStart('.').ToLowerInvariant();
+            if (outputType == OutputType.PdfMerge || outputType == OutputType.PdfSplit)
+            {
+                return extension == "pdf";
+            }
+
             if (outputType == OutputType.Docx || outputType == OutputType.Txt)
             {
                 return extension == "pdf";
             }
 
+            if (outputType == OutputType.Md)
+            {
+                return extension == "pdf" || extension == "txt" || extension == "doc" || extension == "docx" || extension == "odt";
+            }
+
             return IsOutputTypeCompatibleWithCategory(outputType, GetExtensionCategory(extension));
+        }
+
+        public static string GetOutputExtension(OutputType outputType)
+        {
+            if (outputType == OutputType.PdfMerge || outputType == OutputType.PdfSplit)
+            {
+                return "pdf";
+            }
+
+            return outputType.ToString().ToLowerInvariant();
         }
 
         public static Thread InstantiateThread(string name, ThreadStart threadStart)

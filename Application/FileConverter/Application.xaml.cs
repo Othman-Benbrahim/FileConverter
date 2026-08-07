@@ -19,6 +19,7 @@ namespace FileConverter
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Security.Principal;
     using System.Threading;
@@ -38,7 +39,7 @@ namespace FileConverter
         private static readonly Version Version = new Version()
                                                       {
                                                           Major = 2,
-                                                          Minor = 2,
+                                                          Minor = 3,
                                                           Patch = 0,
                                                       };
 
@@ -423,12 +424,20 @@ namespace FileConverter
                 Debug.Log($"Create jobs for conversion preset: '{conversionPreset.FullName}'");
                 try
                 {
-                    for (int index = 0; index < filePaths.Count; index++)
+                    if (conversionPreset.OutputType == OutputType.PdfMerge)
                     {
-                        string inputFilePath = filePaths[index];
-                        ConversionJob conversionJob = ConversionJobFactory.Create(conversionPreset, inputFilePath);
-
+                        ConversionJob conversionJob = ConversionJobFactory.Create(conversionPreset, filePaths.ToArray());
                         conversionService.RegisterConversionJob(conversionJob);
+                    }
+                    else
+                    {
+                        for (int index = 0; index < filePaths.Count; index++)
+                        {
+                            string inputFilePath = filePaths[index];
+                            ConversionJob conversionJob = ConversionJobFactory.Create(conversionPreset, inputFilePath);
+
+                            conversionService.RegisterConversionJob(conversionJob);
+                        }
                     }
                 }
                 catch (Exception exception)

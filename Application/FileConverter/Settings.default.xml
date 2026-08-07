@@ -710,6 +710,25 @@
         <InputPostConversionAction>None</InputPostConversionAction>
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>
+    <ConversionPreset Name="To Markdown" OutputType="Md" IsDefaultSettings="true">
+        <InputTypes>pdf</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="PDF tools/Merge PDFs" OutputType="PdfMerge" IsDefaultSettings="true">
+        <InputTypes>pdf</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)Merged</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="PDF tools/Split PDF" OutputType="PdfSplit" IsDefaultSettings="true">
+        <InputTypes>pdf</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)-page-(n:i)</OutputFileNameTemplate>
+    </ConversionPreset>
     <ConversionPreset Name="Scale 75%/To Mkv" OutputType="Mkv" IsDefaultSettings="true">
         <InputTypes>gif</InputTypes>
         <InputTypes>3gp</InputTypes>

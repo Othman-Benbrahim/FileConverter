@@ -25,5 +25,8 @@ namespace FileConverter
         Webp,
         Docx,
         Txt,
+        PdfMerge,
+        PdfSplit,
+        Md,
     }
 }
