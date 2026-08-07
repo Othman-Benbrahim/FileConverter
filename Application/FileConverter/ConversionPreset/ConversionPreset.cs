@@ -302,7 +302,7 @@ namespace FileConverter
 
         public void AddInputType(string inputType)
         {
-            if (this.inputTypes.Contains(inputType))
+            if (this.inputTypes.Contains(inputType) || !Helpers.IsInputExtensionCompatibleWithOutputType(this.OutputType, inputType))
             {
                 return;
             }
@@ -399,8 +399,7 @@ namespace FileConverter
             for (int index = 0; index < this.inputTypes.Count; index++)
             {
                 string inputType = this.inputTypes[index];
-                string inputCategory = Helpers.GetExtensionCategory(inputType);
-                if (!Helpers.IsOutputTypeCompatibleWithCategory(this.OutputType, inputCategory))
+                if (!Helpers.IsInputExtensionCompatibleWithOutputType(this.OutputType, inputType))
                 {
                     this.RemoveInputType(inputType);
                     index--;
@@ -545,7 +544,9 @@ namespace FileConverter
                     break;
 
                 // Documents
+                case OutputType.Docx:
                 case OutputType.Pdf:
+                case OutputType.Txt:
                     break;
 
                 default:
