@@ -23,5 +23,7 @@ namespace FileConverter
         Wav,
         Webm,
         Webp,
+        Docx,
+        Txt,
     }
 }

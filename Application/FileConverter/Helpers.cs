@@ -92,6 +92,7 @@ namespace FileConverter
                     return InputCategoryNames.AnimatedImage;
 
                 case "pdf":
+                case "txt":
                 case "doc":
                 case "docx":
                 case "ppt":
@@ -223,12 +224,26 @@ namespace FileConverter
                 case OutputType.Gif:
                     return category == InputCategoryNames.Image || category == InputCategoryNames.Video || category == InputCategoryNames.AnimatedImage;
 
+                case OutputType.Docx:
                 case OutputType.Pdf:
-                    return category == InputCategoryNames.Image || category == InputCategoryNames.Document;
+                case OutputType.Txt:
+                    return category == InputCategoryNames.Document ||
+                           (outputType == OutputType.Pdf && category == InputCategoryNames.Image);
 
                 default:
                     return false;
             }
+        }
+
+        public static bool IsInputExtensionCompatibleWithOutputType(OutputType outputType, string extension)
+        {
+            extension = extension.TrimStart('.').ToLowerInvariant();
+            if (outputType == OutputType.Docx || outputType == OutputType.Txt)
+            {
+                return extension == "pdf";
+            }
+
+            return IsOutputTypeCompatibleWithCategory(outputType, GetExtensionCategory(extension));
         }
 
         public static Thread InstantiateThread(string name, ThreadStart threadStart)
