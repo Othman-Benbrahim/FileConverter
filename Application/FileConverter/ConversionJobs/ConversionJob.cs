@@ -222,8 +222,7 @@ namespace FileConverter.ConversionJobs
 
             string extension = System.IO.Path.GetExtension(this.initialInputPath);
             extension = extension.Substring(1, extension.Length - 1);
-            string extensionCategory = Helpers.GetExtensionCategory(extension);
-            if (!Helpers.IsOutputTypeCompatibleWithCategory(this.ConversionPreset.OutputType, extensionCategory))
+            if (!Helpers.IsInputExtensionCompatibleWithOutputType(this.ConversionPreset.OutputType, extension))
             {
                 this.ConversionFailed(Properties.Resources.ErrorInputTypeIncompatibleWithOutputType);
                 return;

@@ -13,6 +13,12 @@ namespace FileConverter.ConversionJobs
                 return new ConversionJob_ExtractCDA(conversionPreset, inputFilePath);    
             }
 
+            if (inputFileExtension == "pdf" &&
+                (conversionPreset.OutputType == OutputType.Docx || conversionPreset.OutputType == OutputType.Txt))
+            {
+                return new ConversionJob_Ghostscript(conversionPreset, inputFilePath);
+            }
+
             if (inputFileExtension == "docx" || inputFileExtension == "odt" || inputFileExtension == "doc")
             {
                 return new ConversionJob_Word(conversionPreset, inputFilePath);
