@@ -1,0 +1,4 @@
+LIBRARY "FileConverterModernMenu"
+EXPORTS
+    DllCanUnloadNow PRIVATE
+    DllGetClassObject PRIVATE
