@@ -613,4 +613,34 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
     <value>Impossible de charger la configuration de File Converter. Voulez vous appliquer la configuration par défaut ?</value>
   </data>
+  <data name="ConversionStateCreateMarkdown" xml:space="preserve">
+    <value>Création du fichier Markdown</value>
+  </data>
+  <data name="ConversionStateMergePdf" xml:space="preserve">
+    <value>Fusion des fichiers PDF</value>
+  </data>
+  <data name="ConversionStateSplitPdf" xml:space="preserve">
+    <value>Découpage du PDF</value>
+  </data>
+  <data name="ErrorMarkdownSourceEmpty" xml:space="preserve">
+    <value>Le document source ne contient aucun texte exploitable pour la conversion Markdown.</value>
+  </data>
+  <data name="ErrorPdfInputsOnly" xml:space="preserve">
+    <value>La fusion accepte uniquement des fichiers PDF existants.</value>
+  </data>
+  <data name="ErrorPdfMergeNeedsMultipleFiles" xml:space="preserve">
+    <value>Sélectionnez au moins deux fichiers PDF à fusionner.</value>
+  </data>
+  <data name="ErrorPdfPageCountFailed" xml:space="preserve">
+    <value>Le nombre de pages du PDF n'a pas pu être déterminé. Le fichier est peut-être invalide, protégé ou endommagé.</value>
+  </data>
+  <data name="OutputTypeMarkdown" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+  <data name="OutputTypePdfMerge" xml:space="preserve">
+    <value>PDF — fusion</value>
+  </data>
+  <data name="OutputTypePdfSplit" xml:space="preserve">
+    <value>PDF — découpage</value>
+  </data>
 </root>

@@ -249,6 +249,12 @@ namespace FileConverter.Properties {
             }
         }
 
+        public static string ConversionStateCreateMarkdown {
+            get {
+                return ResourceManager.GetString("ConversionStateCreateMarkdown", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Detecting PDF text layer.
         /// </summary>
@@ -291,6 +297,12 @@ namespace FileConverter.Properties {
         public static string ConversionStateInQueue {
             get {
                 return ResourceManager.GetString("ConversionStateInQueue", resourceCulture);
+            }
+        }
+
+        public static string ConversionStateMergePdf {
+            get {
+                return ResourceManager.GetString("ConversionStateMergePdf", resourceCulture);
             }
         }
 
@@ -501,6 +513,12 @@ namespace FileConverter.Properties {
             }
         }
 
+        public static string ConversionStateSplitPdf {
+            get {
+                return ResourceManager.GetString("ConversionStateSplitPdf", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Fail to find Ghostscript executable. You should try to reinstall the application..
         /// </summary>
@@ -600,6 +618,12 @@ namespace FileConverter.Properties {
             }
         }
 
+        public static string ErrorMarkdownSourceEmpty {
+            get {
+                return ResourceManager.GetString("ErrorMarkdownSourceEmpty", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to No extractable text was found in the PDF. The file may be scanned and require OCR..
         /// </summary>
@@ -633,6 +657,42 @@ namespace FileConverter.Properties {
         public static string ErrorOCRLanguageDataMissing {
             get {
                 return ResourceManager.GetString("ErrorOCRLanguageDataMissing", resourceCulture);
+            }
+        }
+
+        public static string ErrorPdfInputsOnly {
+            get {
+                return ResourceManager.GetString("ErrorPdfInputsOnly", resourceCulture);
+            }
+        }
+
+        public static string ErrorPdfMergeNeedsMultipleFiles {
+            get {
+                return ResourceManager.GetString("ErrorPdfMergeNeedsMultipleFiles", resourceCulture);
+            }
+        }
+
+        public static string ErrorPdfPageCountFailed {
+            get {
+                return ResourceManager.GetString("ErrorPdfPageCountFailed", resourceCulture);
+            }
+        }
+
+        public static string OutputTypeMarkdown {
+            get {
+                return ResourceManager.GetString("OutputTypeMarkdown", resourceCulture);
+            }
+        }
+
+        public static string OutputTypePdfMerge {
+            get {
+                return ResourceManager.GetString("OutputTypePdfMerge", resourceCulture);
+            }
+        }
+
+        public static string OutputTypePdfSplit {
+            get {
+                return ResourceManager.GetString("OutputTypePdfSplit", resourceCulture);
             }
         }
         

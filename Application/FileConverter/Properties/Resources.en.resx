@@ -604,4 +604,34 @@ use maj for uppercase version</value>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
     <value>Could not load file converter user settings. Would you like to use default settings ?</value>
   </data>
+  <data name="ConversionStateCreateMarkdown" xml:space="preserve">
+    <value>Creating Markdown</value>
+  </data>
+  <data name="ConversionStateMergePdf" xml:space="preserve">
+    <value>Merging PDF files</value>
+  </data>
+  <data name="ConversionStateSplitPdf" xml:space="preserve">
+    <value>Splitting PDF</value>
+  </data>
+  <data name="ErrorMarkdownSourceEmpty" xml:space="preserve">
+    <value>The source document does not contain usable text for Markdown conversion.</value>
+  </data>
+  <data name="ErrorPdfInputsOnly" xml:space="preserve">
+    <value>PDF merging only accepts existing PDF files.</value>
+  </data>
+  <data name="ErrorPdfMergeNeedsMultipleFiles" xml:space="preserve">
+    <value>Select at least two PDF files to merge.</value>
+  </data>
+  <data name="ErrorPdfPageCountFailed" xml:space="preserve">
+    <value>The PDF page count could not be determined. The file may be invalid, protected or damaged.</value>
+  </data>
+  <data name="OutputTypeMarkdown" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+  <data name="OutputTypePdfMerge" xml:space="preserve">
+    <value>PDF — merge</value>
+  </data>
+  <data name="OutputTypePdfSplit" xml:space="preserve">
+    <value>PDF — split</value>
+  </data>
 </root>
