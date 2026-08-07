@@ -19,7 +19,6 @@ namespace FileConverter
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Security.Principal;
     using System.Threading;
@@ -39,7 +38,7 @@ namespace FileConverter
         private static readonly Version Version = new Version()
                                                       {
                                                           Major = 2,
-                                                          Minor = 3,
+                                                          Minor = 4,
                                                           Patch = 0,
                                                       };
 
@@ -247,6 +246,8 @@ namespace FileConverter
             // Parse arguments.
             List<string> filePaths = new List<string>();
             string conversionPresetName = null;
+            string inputFileListPath = null;
+            bool deleteInputFileList = false;
             for (int index = 1; index < args.Length; index++)
             {
                 string argument = args[index];
@@ -312,6 +313,35 @@ namespace FileConverter
                                 return;
                             }
 
+                        case "register-modern-menu":
+                            {
+                                if (index >= args.Length - 2)
+                                {
+                                    Debug.LogError(errorCode: 0x10, "Invalid modern menu registration arguments.");
+                                    Application.AskForShutdown();
+                                    return;
+                                }
+
+                                string packagePath = args[++index];
+                                string externalLocation = args[++index];
+                                if (!ModernMenuRegistrationService.Register(packagePath, externalLocation))
+                                {
+                                    Debug.LogError(errorCode: 0x11, "Failed to register the Windows 11 modern context menu.");
+                                }
+
+                                Application.AskForShutdown();
+                                return;
+                            }
+
+                        case "unregister-modern-menu":
+                            if (!ModernMenuRegistrationService.Unregister())
+                            {
+                                Debug.LogError(errorCode: 0x12, "Failed to unregister the Windows 11 modern context menu.");
+                            }
+
+                            Application.AskForShutdown();
+                            return;
+
                         case "version":
                             Console.WriteLine(ApplicationVersion.ToString());
                             Application.AskForShutdown();
@@ -341,10 +371,10 @@ namespace FileConverter
                                 return;
                             }
 
-                            string fileListPath = args[index + 1];
+                            inputFileListPath = args[index + 1];
                             try
                             {
-                                using (FileStream file = File.OpenRead(fileListPath))
+                                using (FileStream file = File.OpenRead(inputFileListPath))
                                 using (StreamReader reader = new StreamReader(file))
                                 {
                                     while (!reader.EndOfStream)
@@ -363,6 +393,10 @@ namespace FileConverter
                             index++;
                             break;
 
+                        case "delete-input-list":
+                            deleteInputFileList = true;
+                            break;
+
                         case "verbose":
                             {
                                 this.verbose = true;
@@ -378,6 +412,18 @@ namespace FileConverter
                 else
                 {
                     filePaths.Add(argument);
+                }
+            }
+
+            if (deleteInputFileList && !string.IsNullOrEmpty(inputFileListPath))
+            {
+                try
+                {
+                    File.Delete(inputFileListPath);
+                }
+                catch (Exception exception)
+                {
+                    Debug.Log($"Can't delete temporary input list: {exception.Message}");
                 }
             }
 
@@ -424,20 +470,9 @@ namespace FileConverter
                 Debug.Log($"Create jobs for conversion preset: '{conversionPreset.FullName}'");
                 try
                 {
-                    if (conversionPreset.OutputType == OutputType.PdfMerge)
+                    foreach (ConversionJob conversionJob in ConversionJobFactory.CreateJobs(conversionPreset, filePaths))
                     {
-                        ConversionJob conversionJob = ConversionJobFactory.Create(conversionPreset, filePaths.ToArray());
                         conversionService.RegisterConversionJob(conversionJob);
-                    }
-                    else
-                    {
-                        for (int index = 0; index < filePaths.Count; index++)
-                        {
-                            string inputFilePath = filePaths[index];
-                            ConversionJob conversionJob = ConversionJobFactory.Create(conversionPreset, inputFilePath);
-
-                            conversionService.RegisterConversionJob(conversionJob);
-                        }
                     }
                 }
                 catch (Exception exception)

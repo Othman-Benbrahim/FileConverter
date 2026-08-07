@@ -16,6 +16,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -112,6 +113,9 @@
       <DependentUpon>EncodingQualitySliderControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConversionJobs\ConversionFlags.cs" />
+    <Compile Include="ConversionEngines\BuiltInConversionEngines.cs" />
+    <Compile Include="ConversionEngines\ConversionEngineRegistry.cs" />
+    <Compile Include="ConversionEngines\IConversionEngine.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Office.cs" />
     <Compile Include="ConversionJobs\ConversionJob_PowerPoint.cs" />
     <Compile Include="ConversionJobs\ConversionJob_ExtractCDA.cs" />
@@ -145,6 +149,7 @@
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IUpgradeService.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\ModernMenuRegistrationService.cs" />
     <Compile Include="PathHelpers.cs" />
     <Compile Include="Properties\Resources.en.Designer.cs">
       <DependentUpon>Resources.en.resx</DependentUpon>
@@ -324,6 +329,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="app.manifest" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
