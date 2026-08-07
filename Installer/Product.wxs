@@ -1,6 +1,6 @@
 ﻿<!-- Upgrade documentation: http://wixtoolset.org/documentation/manual/v3/howtos/updates/major_upgrade.html -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Name="File Converter" Language="1033" Version="2.3.0" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
+    <Package Name="File Converter" Language="1033" Version="2.4.0" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
         <Icon Id="icon.ico" SourceFile="..\Resources\Icons\ApplicationIcon.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <SetProperty Id="ARPINSTALLLOCATION" Value="[ApplicationFolder]" After="CostFinalize" />
@@ -14,15 +14,26 @@
             <ComponentGroupRef Id="Languages" />
         </Feature>
 
-        <CustomAction Id="InstallShell" ExeCommand="--register-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
-        <CustomAction Id="UninstallShell" ExeCommand="--unregister-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
+        <!-- The legacy SharpShell extension is a best-effort fallback. Its registration must not
+             roll back the complete MSI because the Windows 11 IExplorerCommand menu is registered
+             separately after InstallFinalize. -->
+        <CustomAction Id="InstallShell" ExeCommand="--register-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="ignore" Impersonate="no" FileRef="FileConverter.exe" />
+        <CustomAction Id="UninstallShell" ExeCommand="--unregister-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="ignore" Impersonate="no" FileRef="FileConverter.exe" />
         <CustomAction Id="PostInstallInit" ExeCommand="--post-install-init" Execute="immediate" FileRef="FileConverter.exe" />
+        <?if $(var.IncludeModernMenu) = 1 ?>
+        <CustomAction Id="RegisterModernMenu" ExeCommand="--register-modern-menu &quot;[INSTALLFOLDER]FileConverter.ModernMenu.msix&quot; &quot;[INSTALLFOLDER].&quot;" Execute="immediate" Return="ignore" FileRef="FileConverter.exe" />
+        <CustomAction Id="UnregisterModernMenu" ExeCommand="--unregister-modern-menu" Execute="immediate" Return="ignore" FileRef="FileConverter.exe" />
+        <?endif?>
 
         <UI>
             <ProgressText Action="InstallFiles" Template="File: [1],  Directory: [9],  Size: [6]" Message="Copying new files" />
             <ProgressText Action="InstallShell" Message="Register shell extension to Windows Explorer" />
             <ProgressText Action="UninstallShell" Message="Unregister shell extension from Windows Explorer" />
             <ProgressText Action="PostInstallInit" Message="Initialize conversion presets" />
+            <?if $(var.IncludeModernMenu) = 1 ?>
+            <ProgressText Action="RegisterModernMenu" Message="Register Windows 11 context menu" />
+            <ProgressText Action="UnregisterModernMenu" Message="Unregister Windows 11 context menu" />
+            <?endif?>
         </UI>
 
         <PropertyRef Id="WIX_IS_NETFRAMEWORK_48_OR_LATER_INSTALLED" />
@@ -32,6 +43,10 @@
             <Custom Action="UninstallShell" Before="RemoveRegistryValues" Condition="(NOT UPGRADINGPRODUCTCODE) AND (REMOVE~=&quot;ALL&quot;)" />
             <Custom Action="InstallShell" After="WriteRegistryValues" Condition="NOT Installed" />
             <Custom Action="PostInstallInit" After="InstallFinalize" Condition="NOT Installed" />
+            <?if $(var.IncludeModernMenu) = 1 ?>
+            <Custom Action="UnregisterModernMenu" Before="UninstallShell" Condition="(NOT UPGRADINGPRODUCTCODE) AND (REMOVE~=&quot;ALL&quot;)" />
+            <Custom Action="RegisterModernMenu" After="PostInstallInit" Condition="NOT Installed" />
+            <?endif?>
         </InstallExecuteSequence>
         
         <ui:WixUI Id="WixUI_InstallDir" />
@@ -84,6 +99,14 @@
             <Component Guid="{566A73FB-427D-43C4-9ABC-92F2528F6D0A}">
                 <File Id="SharpShell.dll" Source="$(var.FileConverterExtension.TargetDir)SharpShell.dll" KeyPath="yes" Checksum="yes" />
             </Component>
+            <?if $(var.IncludeModernMenu) = 1 ?>
+            <Component Guid="{7F5B1BCE-B37A-4513-B4CF-E6B57D7DA39F}">
+                <File Id="FileConverterModernMenu.dll" Source="$(var.FileConverterModernMenu.TargetPath)" KeyPath="yes" Checksum="yes" />
+            </Component>
+            <Component Guid="{7B5FC48E-7F41-49D4-AD71-509950187ED2}">
+                <File Id="FileConverter.ModernMenu.msix" Source="..\Packaging\ModernMenu\bin\FileConverter.ModernMenu.msix" KeyPath="yes" />
+            </Component>
+            <?endif?>
             
             <!-- Third parties -->
             <Component Guid="{bae11ca4-0842-46f0-b0e5-95ecc1c994fc}">
