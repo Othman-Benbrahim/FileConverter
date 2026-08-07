@@ -1,6 +1,6 @@
 ﻿<!-- Upgrade documentation: http://wixtoolset.org/documentation/manual/v3/howtos/updates/major_upgrade.html -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Name="File Converter" Language="1033" Version="2.2.0" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
+    <Package Name="File Converter" Language="1033" Version="2.2.1" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
         <Icon Id="icon.ico" SourceFile="..\Resources\Icons\ApplicationIcon.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <SetProperty Id="ARPINSTALLLOCATION" Value="[ApplicationFolder]" After="CostFinalize" />
@@ -50,7 +50,9 @@
 
     <Fragment>
         <StandardDirectory Id="ProgramFiles64Folder">
-            <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" />
+            <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)">
+                <Directory Id="TESSDATAFOLDER" Name="tessdata" />
+            </Directory>
         </StandardDirectory>
         <StandardDirectory Id="ProgramMenuFolder">
             <Directory Id="ApplicationStartMenuShortcut" Name="File Converter" />
@@ -136,6 +138,14 @@
             </Component>
             <Component Guid="{DC549AF7-6004-423E-BFE3-3508F4AC4682}">
                 <File Id="gswin64c.exe" Source="$(var.FileConverter.TargetDir)gswin64c.exe" KeyPath="yes" Checksum="yes" />
+            </Component>
+            <Component Guid="{F54B03C2-00D9-4C2A-A0D0-B23F50C3B6C6}">
+                <File Id="GhostscriptCOPYING" Source="$(var.FileConverter.TargetDir)Ghostscript-COPYING" KeyPath="yes" />
+            </Component>
+            <Component Guid="{86C17EBA-7714-4AE7-8F6B-E8532D3618A1}" Directory="TESSDATAFOLDER">
+                <File Id="EnglishOCRData" Source="$(var.FileConverter.TargetDir)tessdata\eng.traineddata" KeyPath="yes" />
+                <File Id="FrenchOCRData" Source="$(var.FileConverter.TargetDir)tessdata\fra.traineddata" />
+                <File Id="TessdataLicense" Source="$(var.FileConverter.TargetDir)tessdata\LICENSE" />
             </Component>
             <Component Guid="{12B808AB-C4E3-4B0D-B34B-0124C75B2279}">
                 <File Id="Markdown.Xaml.dll" KeyPath="yes" Source="$(var.FileConverter.TargetDir)Markdown.Xaml.dll" Checksum="yes" />
