@@ -10,6 +10,8 @@ You can download it here: [file-converter.io](https://file-converter.io/?from=re
 
 You can find more information about what's in File converter and how to use it on the [wiki](https://github.com/Tichau/FileConverter/wiki).
 
+This modified build also supports PDF to DOCX/TXT/Markdown conversion, local OCR for scanned PDFs, PDF merging, and one-PDF-per-page splitting.
+
 ## Donate
 
 File Converter is a personal open source project started in 2014. I have put hundreds of hours adding, refining and tuning File Converter with the goal of making the conversion and compression of files an easy task for everyone.
