@@ -423,11 +423,13 @@
     <PostBuildEvent>copy /Y "$(SolutionDir)Middleware\ffmpeg\ffmpeg.exe" "$(TargetDir)ffmpeg.exe"
 copy /Y "$(SolutionDir)Middleware\gs\gsdll64.dll" "$(TargetDir)gsdll64.dll"
 copy /Y "$(SolutionDir)Middleware\gs\gswin64c.exe" "$(TargetDir)gswin64c.exe"
+copy /Y "$(SolutionDir)Middleware\gs\COPYING" "$(TargetDir)Ghostscript-COPYING"
+xcopy /E /I /Y "$(SolutionDir)Middleware\gs\tessdata" "$(TargetDir)tessdata"
 copy /Y "$(ProjectDir)Settings.default.xml" "$(TargetDir)Settings.default.xml"
-robocopy $(TargetDir) $(TargetDir)\Languages "$(TargetName).resources.dll" /CREATE /S /XD Languages /IS /IT /NFL /NDL /NJH /NJS /NC /NS /NP
-if %25errorlevel%25 leq 1 exit 0 else exit %25errorlevel%25
-robocopy $(TargetDir) $(TargetDir)\Languages "$(TargetName).resources.dll" /MOVE /S /XD Languages /XL /IS /IT /NFL /NDL /NJH /NJS /NC /NS /NP
-if %25errorlevel%25 leq 1 exit 0 else exit %25errorlevel%25</PostBuildEvent>
+robocopy "$(TargetDir)" "$(TargetDir)Languages" "$(TargetName).resources.dll" /CREATE /S /XD Languages /IS /IT /NFL /NDL /NJH /NJS /NC /NS /NP
+if %25errorlevel%25 leq 7 exit 0 else exit %25errorlevel%25
+robocopy "$(TargetDir)" "$(TargetDir)Languages" "$(TargetName).resources.dll" /MOVE /S /XD Languages /XL /IS /IT /NFL /NDL /NJH /NJS /NC /NS /NP
+if %25errorlevel%25 leq 7 exit 0 else exit %25errorlevel%25</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
