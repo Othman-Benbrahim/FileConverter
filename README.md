@@ -79,7 +79,7 @@ Thanks to ffmpeg devs for this awesome open source file conversion tool. [Web si
 Thanks to image magick devs for this awesome open source image edition software suite.  [Web site link](http://imagemagick.net)
 And thanks to dlemstra for the C# wrapper of this software. [Github link](https://github.com/ImageMagick/ImageMagick)
 
-**Ghostscript** (10.02.1) as pdf edition software.
+**Ghostscript** (10.07.1) as pdf edition and local OCR software. The French and English OCR models come from the Tesseract `tessdata_fast` project.
 Thanks to ghostscript devs. [Download link](https://www.ghostscript.com/download/gsdnld.html)
 
 **SharpShell** to easily create windows context menu extensions.
