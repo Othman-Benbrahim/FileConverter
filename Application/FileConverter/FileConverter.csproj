@@ -119,6 +119,7 @@
     <Compile Include="ConversionJobs\ConversionJob_FFMPEG.Converters.cs" />
     <Compile Include="ConversionJobs\ConversionJob_FFMPEG.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Gif.cs" />
+    <Compile Include="ConversionJobs\ConversionJob_Ghostscript.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Ico.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Excel.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Word.cs" />
