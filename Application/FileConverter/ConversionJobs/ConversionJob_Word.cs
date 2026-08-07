@@ -32,7 +32,7 @@ namespace FileConverter.ConversionJobs
 
         protected override int GetOutputFilesCount()
         {
-            if (this.ConversionPreset.OutputType == OutputType.Pdf)
+            if (this.ConversionPreset.OutputType == OutputType.Pdf || this.ConversionPreset.OutputType == OutputType.Md)
             {
                 return 1;
             }
@@ -66,6 +66,10 @@ namespace FileConverter.ConversionJobs
             {
                 this.intermediateFilePath = this.OutputFilePath;
             }
+            else if (this.ConversionPreset.OutputType == OutputType.Md)
+            {
+                this.intermediateFilePath = string.Empty;
+            }
             else
             {
                 // Generate intermediate file path.
@@ -96,6 +100,26 @@ namespace FileConverter.ConversionJobs
 
             // Make this document the active document.
             this.document.Activate();
+
+            if (this.ConversionPreset.OutputType == OutputType.Md)
+            {
+                this.UserState = Properties.Resources.ConversionStateCreateMarkdown;
+                string documentText = this.document.Content.Text;
+                if (!MarkdownTextConverter.HasMeaningfulText(documentText))
+                {
+                    this.ConversionFailed(Properties.Resources.ErrorMarkdownSourceEmpty);
+                }
+                else
+                {
+                    MarkdownTextConverter.WriteMarkdownText(documentText, this.InputFilePath, this.OutputFilePath);
+                }
+
+                Debug.Log($"Close word document '{this.InputFilePath}'.");
+                this.document.Close(Word.Enums.WdSaveOptions.wdDoNotSaveChanges);
+                this.document = null;
+                this.ReleaseOfficeApplicationInstanceIfNeeded();
+                return;
+            }
 
             this.UserState = Properties.Resources.ConversionStateConversion;
 

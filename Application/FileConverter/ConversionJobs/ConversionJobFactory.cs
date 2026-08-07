@@ -4,6 +4,16 @@ namespace FileConverter.ConversionJobs
 {
     public static class ConversionJobFactory
     {
+        public static ConversionJob Create(ConversionPreset conversionPreset, string[] inputFilePaths)
+        {
+            if (conversionPreset.OutputType != OutputType.PdfMerge)
+            {
+                throw new System.NotSupportedException("A multi-file conversion job is only supported for PDF merging.");
+            }
+
+            return new ConversionJob_PdfMerge(conversionPreset, inputFilePaths);
+        }
+
         public static ConversionJob Create(ConversionPreset conversionPreset, string inputFilePath)
         {
             string inputFileExtension = System.IO.Path.GetExtension(inputFilePath);
@@ -14,9 +24,19 @@ namespace FileConverter.ConversionJobs
             }
 
             if (inputFileExtension == "pdf" &&
-                (conversionPreset.OutputType == OutputType.Docx || conversionPreset.OutputType == OutputType.Txt))
+                (conversionPreset.OutputType == OutputType.Docx || conversionPreset.OutputType == OutputType.Md || conversionPreset.OutputType == OutputType.Txt))
             {
                 return new ConversionJob_Ghostscript(conversionPreset, inputFilePath);
+            }
+
+            if (inputFileExtension == "pdf" && conversionPreset.OutputType == OutputType.PdfSplit)
+            {
+                return new ConversionJob_PdfSplit(conversionPreset, inputFilePath);
+            }
+
+            if (inputFileExtension == "txt" && conversionPreset.OutputType == OutputType.Md)
+            {
+                return new ConversionJob_Markdown(conversionPreset, inputFilePath);
             }
 
             if (inputFileExtension == "docx" || inputFileExtension == "odt" || inputFileExtension == "doc")
