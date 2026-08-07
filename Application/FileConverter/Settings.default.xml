@@ -700,6 +700,16 @@
         <InputPostConversionAction>None</InputPostConversionAction>
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>
+    <ConversionPreset Name="To Docx" OutputType="Docx" IsDefaultSettings="true">
+        <InputTypes>pdf</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="To Txt" OutputType="Txt" IsDefaultSettings="true">
+        <InputTypes>pdf</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
     <ConversionPreset Name="Scale 75%/To Mkv" OutputType="Mkv" IsDefaultSettings="true">
         <InputTypes>gif</InputTypes>
         <InputTypes>3gp</InputTypes>
