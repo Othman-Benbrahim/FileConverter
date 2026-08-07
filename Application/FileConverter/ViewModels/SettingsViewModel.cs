@@ -28,6 +28,7 @@ namespace FileConverter.ViewModels
     public class SettingsViewModel : ObservableRecipient, IDataErrorInfo
     {
         private InputExtensionCategory[] inputCategories;
+        private InputExtensionCategory pdfInputCategory;
         private PresetFolderNode presetsRootFolder;
         private PresetFolderNode selectedFolder;
         private PresetNode selectedPreset;
@@ -88,6 +89,8 @@ namespace FileConverter.ViewModels
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Ico));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Gif));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Pdf));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Docx));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Txt));
             this.outputTypes = new ListCollectionView(outputTypeViewModels);
             this.outputTypes.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
 
@@ -103,6 +106,13 @@ namespace FileConverter.ViewModels
             {
                 if (this.inputCategories == null)
                 {
+                    yield break;
+                }
+
+                if (this.SelectedPreset != null &&
+                    (this.SelectedPreset.Preset.OutputType == OutputType.Docx || this.SelectedPreset.Preset.OutputType == OutputType.Txt))
+                {
+                    yield return this.pdfInputCategory;
                     yield break;
                 }
 
@@ -405,6 +415,8 @@ namespace FileConverter.ViewModels
             }
 
             this.inputCategories = categories.ToArray();
+            this.pdfInputCategory = new InputExtensionCategory(Helpers.InputCategoryNames.Document);
+            this.pdfInputCategory.AddExtension("pdf");
             this.OnPropertyChanged(nameof(this.InputCategories));
         }
 
