@@ -89,7 +89,10 @@ namespace FileConverter.ViewModels
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Ico));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Gif));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Pdf));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.PdfMerge));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.PdfSplit));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Docx));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Md));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Txt));
             this.outputTypes = new ListCollectionView(outputTypeViewModels);
             this.outputTypes.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
@@ -110,7 +113,10 @@ namespace FileConverter.ViewModels
                 }
 
                 if (this.SelectedPreset != null &&
-                    (this.SelectedPreset.Preset.OutputType == OutputType.Docx || this.SelectedPreset.Preset.OutputType == OutputType.Txt))
+                    (this.SelectedPreset.Preset.OutputType == OutputType.Docx ||
+                     this.SelectedPreset.Preset.OutputType == OutputType.Txt ||
+                     this.SelectedPreset.Preset.OutputType == OutputType.PdfMerge ||
+                     this.SelectedPreset.Preset.OutputType == OutputType.PdfSplit))
                 {
                     yield return this.pdfInputCategory;
                     yield break;
