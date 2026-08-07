@@ -545,7 +545,10 @@ namespace FileConverter
 
                 // Documents
                 case OutputType.Docx:
+                case OutputType.Md:
                 case OutputType.Pdf:
+                case OutputType.PdfMerge:
+                case OutputType.PdfSplit:
                 case OutputType.Txt:
                     break;
 
