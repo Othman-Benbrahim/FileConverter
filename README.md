@@ -1,102 +1,148 @@
-# File Converter
+# File Converter — build modifié 2.4.0
 
-## Description
-
-**File Converter** is a very simple tool which allows you to convert and compress one or several file(s) using the context menu of windows explorer.
+File Converter permet de convertir et compresser des fichiers depuis le menu contextuel de l’Explorateur Windows. Ce dépôt est une évolution du projet libre [Tichau/FileConverter](https://github.com/Tichau/FileConverter), toujours distribué sous GPL v3.
 
 ![File Converter Usage](Resources/FileConverterUsage.gif)
 
-You can download it here: [file-converter.io](https://file-converter.io/?from=readme.md).
+## Modifications ajoutées dans ce build
 
-You can find more information about what's in File converter and how to use it on the [wiki](https://github.com/Tichau/FileConverter/wiki).
+### Documents PDF et texte
 
-This modified build also supports PDF to DOCX/TXT/Markdown conversion, local OCR for scanned PDFs, PDF merging, and one-PDF-per-page splitting.
+- Conversion PDF vers DOCX avec reconstruction locale du texte et des paragraphes.
+- Conversion PDF vers TXT.
+- Détection des PDF scannés et messages d’erreur plus explicites.
+- OCR entièrement local avec Ghostscript/Tesseract, modèles français et anglais inclus dans `tessdata`.
+- Fusion de plusieurs PDF avec le préréglage `PDF tools/Merge PDFs`.
+- Découpage d’un PDF en un fichier par page avec `PDF tools/Split PDF`.
+- Conversion PDF ou TXT vers Markdown avec le préréglage `To Markdown`.
+- Ghostscript mis à jour en 10.07.1 et fichiers de licence associés au MSI.
 
-## Donate
+### Menu Windows
 
-File Converter is a personal open source project started in 2014. I have put hundreds of hours adding, refining and tuning File Converter with the goal of making the conversion and compression of files an easy task for everyone.
+- Conservation de l’extension SharpShell historique, visible sous **Afficher plus d’options** dans Windows 11. Elle sert aussi de solution de repli sous Windows 10 ou si le package moderne ne peut pas être inscrit.
+- Ajout d’une DLL native x64 `IExplorerCommand` pour le menu contextuel principal de Windows 11.
+- Affichage dynamique des seuls préréglages compatibles avec tous les fichiers sélectionnés.
+- Gestion de la fusion PDF uniquement lorsqu’au moins deux PDF sont sélectionnés.
+- Accès à `Configure presets...` dans le sous-menu moderne.
+- Transmission de grandes sélections par fichier temporaire UTF-8, supprimé par l’application après lecture.
+- Recherche de l’exécutable par `HKCU\Software\FileConverter\Path`, avec repli sur le dossier de la DLL.
+- Déploiement du menu moderne au moyen d’un package MSIX sparse signé, inscrit automatiquement par le MSI.
 
-You can help me by [contributing to the project](https://github.com/Tichau/FileConverter/wiki#contribute), by [making a donation](https://www.paypal.com/donate/?cmd=_donations&business=3BDWQTYTTA3D8&item_name=File+Converter+Donations&currency_code=EUR&Z3JncnB0=) or just by [saying thanks](https://saythanks.io/to/Tichau) :).
+### Architecture modulaire des moteurs
 
-## Troubleshooting
+- Remplacement des tests en cascade du `ConversionJobFactory` par un registre ordonné de moteurs.
+- Interface publique `IConversionEngine` avec nom, priorité, détection de compatibilité et création des tâches.
+- Prise en charge séparée des moteurs unitaires et des moteurs par lot.
+- Sélection d’un moteur par fichier, ce qui conserve les sélections mixtes prises en charge auparavant.
+- API d’enregistrement et de retrait permettant d’ajouter un moteur sans modifier la fabrique.
+- Moteurs intégrés : fusion/découpage PDF, Ghostscript/OCR, Markdown, Word, Excel, PowerPoint, CDA, ICO, GIF, ImageMagick et FFmpeg.
 
-If you encounter any problem with File Converter, you can:
+Exemple d’ajout au démarrage :
 
-* See the already known problems in the [troubleshooting section of the documentation](https://github.com/Tichau/FileConverter/wiki/Troubleshooting).
-* Or report an issue on the [bug tracker](https://github.com/Tichau/FileConverter/issues).
+```csharp
+ConversionJobFactory.EngineRegistry.Register(new MonMoteurDeConversion());
+```
 
-## Setup development environment
+`MonMoteurDeConversion` doit implémenter `FileConverter.ConversionEngines.IConversionEngine`. Une priorité plus élevée est évaluée en premier ; le moteur FFmpeg reste le dernier recours.
 
-### Requirements
+### Correctifs de compilation et d’installation
 
-For File Converter and its explorer extension:
+- Correction de la référence `InputCategoryNames` dans les paramètres document.
+- Correction du PostBuild lorsque le chemin du projet contient des espaces.
+- Acceptation correcte des codes de succès `robocopy` 0 à 7.
+- Suppression du problème de guillemet provoqué par le `\` final de `$(TargetDir)`.
+- Copie de FFmpeg, Ghostscript, `tessdata`, des langues et des paramètres par défaut dans la sortie Release.
+- MSI mis à jour pour installer les nouveaux exécutables, DLL, données OCR, documentation et package du menu Windows 11.
 
-* Visual Studio 2022
+## Prérequis de compilation
 
-For the installer:
+Dans Visual Studio Installer 2022 Community, installer :
 
-* [Wix 5](http://wixtoolset.org/) (will be installed by nuget)
-  * [Community Visual Studio Extension](https://marketplace.visualstudio.com/items?itemName=FireGiant.FireGiantHeatWaveDev17)
-* [Windows SDK Signing Tools for Desktop Apps](https://developer.microsoft.com/fr-fr/windows/downloads/windows-10-sdk)
+- **Développement Desktop en .NET** ;
+- **Développement Desktop en C++** avec MSVC v143 ;
+- le **.NET Framework 4.8 Developer Pack** ;
+- le **Windows 10/11 SDK**, notamment MakeAppx et SignTool ;
+- WiX 5 est restauré par NuGet lors de la compilation.
 
-## Thanks
+Le projet complet est indispensable : le ZIP correctif livré séparément doit être copié par-dessus une copie complète de FileConverter en conservant exactement les sous-dossiers.
 
-Thanks to all the contributors of File Converter project.
+## Générer un MSI depuis `cmd`
 
-### Localization
+Le menu principal de Windows 11 impose un package MSIX signé. Pour un test sur votre propre poste, créez une seule fois un certificat de développement. Depuis `cmd` :
 
-* Thanks to **Khidreal** and **hugok79** for the Portuguese localization.
-* Thanks to **Marhc** for the Brazilian localization.
-* Thanks to **Chachak** for the Spanish localization.
-* Thanks to **Davide** for the Italian localization.
-* Thanks to **nikotschierske** for the German localization.
-* Thanks to **Snoopy1866** for the Simplified Chinese localization.
-* Thanks to **MayaC0re** for the Turkish localization.
-* Thanks to **vishveshjain** for the Hindi localization.
-* Thanks to **Mahmoud0Sultan** for the Arabic localization.
-* Thanks to **Sedimentary-Rock**, **NeKoOuO** and **PeterDaveHello** for the Traditional Chinese localization.
-* Thanks to **CrisBalGreece** for the Greek localization.
-* Thanks to **AshiVered** for the Hebrew localization.
-* Thanks to **MrHero118** and **Mehrdad32** for the Persian localization.
-* Thanks to **crnobog69** for the Serbian localizations.
-* Thanks to **oogamiyuta** for the Japanese localization.
-* Thanks to **AidyTheWeird** for the Czech localization.
-* Thanks to **Alanimdeo** for the Korean localization.
-* Thanks to **vrykolakas166** and **thaovd** for the Vietnamese localization.
-* Thanks to **iliamak** for the Russian localization.
-* Thanks to **itsmefdil** for the Indonesian localization.
-* Thanks to **hamzaharoon1314** for the Urdu localization.
-* Thanks to **Zyvrec7** and **stohlferenc** for the Hungarian localization.
-* Thanks to **Maerek** and **MrPrince419** for the Polish localization.
-* Thanks to **rkalitta** for the Swedish localization.
+```bat
+cd /d "C:\Users\othma\Desktop\FileConverterModif\FileConverter-integration"
+Packaging\ModernMenu\create-development-certificate.cmd VotreMotDePassePfx
+```
+
+Le script demande confirmation, crée un PFX local et place uniquement son certificat public dans `Cert:\CurrentUser\TrustedPeople`. Le PFX contient la clé privée : ne le publiez jamais et ne l’ajoutez pas au ZIP ou au dépôt.
+
+Générez ensuite toute la release :
+
+```bat
+cd /d "C:\Users\othma\Desktop\FileConverterModif\FileConverter-integration"
+build-release.cmd "Packaging\ModernMenu\FileConverter-Development.pfx" "VotreMotDePassePfx"
+```
+
+Le script appelle automatiquement `VsDevCmd.bat`, compile l’application, l’extension historique et la DLL C++ x64, construit et signe le package sparse, puis génère le MSI avec WiX.
+
+Résultat :
+
+```text
+Installer\bin\x64\Release\FileConverter-setup.msi
+```
+
+Pour une release distribuée à d’autres machines, utilisez un certificat de production dont la chaîne est reconnue par Windows. Un certificat auto-signé approuvé seulement sur votre poste ne convient pas à la distribution. Le sujet du certificat doit correspondre au champ `Publisher` ; cette version utilise `CN=File Converter Community Build` dans :
+
+- `Packaging\ModernMenu\AppxManifest.xml` ;
+- `Application\FileConverter\app.manifest` ;
+- `Packaging\ModernMenu\build-modern-menu-package.cmd` (`EXPECTED_SUBJECT`).
+
+Si votre certificat de production possède un autre sujet, modifiez ces trois valeurs de façon strictement identique avant la compilation. Le MSIX est signé par `build-release.cmd`. La signature Authenticode du MSI reste pilotée par l’éventuel fichier privé `Installer\Installer.sign` du projet d’origine.
+
+## Installation et vérification
+
+Installez le MSI, puis redémarrez l’Explorateur si le menu n’apparaît pas immédiatement :
+
+```bat
+taskkill /f /im explorer.exe
+start explorer.exe
+```
+
+Vérifiez l’inscription du package moderne :
+
+```bat
+powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell"
+```
+
+Sous Windows 11, `File Converter` doit apparaître dans le premier menu contextuel. L’extension historique reste disponible dans **Afficher plus d’options**.
+
+Erreurs courantes :
+
+- `0x800B0109` : le certificat auto-signé n’est pas dans `CurrentUser\TrustedPeople` ; relancer le script de certificat et accepter l’import.
+- `0x80073CF9` : la même version du package est déjà inscrite ; désinstaller d’abord l’ancien MSI ou exécuter `powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell | Remove-AppxPackage"`.
+- menu absent après installation : redémarrer l’Explorateur ou fermer puis rouvrir la session.
+- échec du menu moderne mais MSI installé : utiliser **Afficher plus d’options** ; l’extension SharpShell est conservée volontairement comme repli.
+
+## Fichiers structurants de cette évolution
+
+- `Application\FileConverter\ConversionEngines\` : contrat, registre et moteurs intégrés.
+- `Application\FileConverterModernMenu\` : serveur COM natif `IExplorerCommand` x64.
+- `Packaging\ModernMenu\` : manifeste, ressources, certificat de développement et création du MSIX sparse.
+- `Installer\Product.wxs` : déploiement, inscription et désinscription des deux menus.
+- `build-release.cmd` : génération complète de la release depuis `cmd`.
 
 ## Middlewares
 
-File converter uses the following middlewares:
+- **FFmpeg 8.0.1** pour l’audio et la vidéo.
+- **ImageMagick 14.10** pour les images et certains PDF.
+- **Ghostscript 10.07.1** pour les PDF et l’OCR local.
+- Modèles OCR français et anglais issus de `tessdata_fast`.
+- **SharpShell 2.7.2** pour le menu historique.
+- **Markdown.XAML** pour l’affichage Markdown dans l’application.
+- **Ripper** et **yeti.mmedia** pour l’extraction CD Audio.
+- **WpfAnimatedGif** pour les GIF animés.
 
-**ffmpeg** (v8.0.1) as file conversion software.
-Thanks to ffmpeg devs for this awesome open source file conversion tool. [Web site link](https://ffmpeg.org)
+## Licence
 
-**ImageMagick** (v14.10) as image edition and conversion software.
-Thanks to image magick devs for this awesome open source image edition software suite.  [Web site link](http://imagemagick.net)
-And thanks to dlemstra for the C# wrapper of this software. [Github link](https://github.com/ImageMagick/ImageMagick)
-
-**Ghostscript** (10.07.1) as pdf edition and local OCR software. The French and English OCR models come from the Tesseract `tessdata_fast` project.
-Thanks to ghostscript devs. [Download link](https://www.ghostscript.com/download/gsdnld.html)
-
-**SharpShell** to easily create windows context menu extensions.
-Thanks to Dave Kerr for his work on SharpShell. [GitHub link](https://github.com/dwmkerr/sharpshell)
-
-**Ripper** and **yeti.mmedia** for CD Audio extraction.
-Thanks to Idael Cardoso for his work on CD Audio ripper. [Code project link](https://www.codeproject.com/Articles/5458/C-Sharp-Ripper)
-
-**Markdown.XAML** for markdown rendering in the wpf application.
-Thanks to Bevan Arps for his work on Markdown.XAML. [GitHub link](https://github.com/theunrepentantgeek/Markdown.XAML)
-
-**WpfAnimatedGif** for animated gif rendering in the wpf application.
-Thanks to Thomas Levesque for his work on WpfAnimatedGif. [GitHub link](https://github.com/XamlAnimatedGif/WpfAnimatedGif)
-
-## License
-
-File Converter is licensed under the GPL version 3 License.
-For more information check the LICENSE.md file in your installation folder or the [gnu website](https://www.gnu.org/licenses/gpl.html).
+File Converter et ces modifications sont placés sous GNU GPL version 3. Consultez [LICENSE.md](LICENSE.md). Les middlewares conservent leurs licences respectives, copiées ou référencées dans le projet.
