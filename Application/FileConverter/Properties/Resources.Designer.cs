@@ -482,6 +482,15 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("ErrorCantFindFFMPEG", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to find Ghostscript executable. You should try to reinstall the application..
+        /// </summary>
+        public static string ErrorCantFindGhostscript {
+            get {
+                return ResourceManager.GetString("ErrorCantFindGhostscript", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find the output file(s)..
@@ -543,6 +552,42 @@ namespace FileConverter.Properties {
         public static string ErrorFailedToLaunchFFMPEG {
             get {
                 return ResourceManager.GetString("ErrorFailedToLaunchFFMPEG", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fail to launch Ghostscript..
+        /// </summary>
+        public static string ErrorFailedToLaunchGhostscript {
+            get {
+                return ResourceManager.GetString("ErrorFailedToLaunchGhostscript", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ghostscript conversion failed (exit code {0}). {1}.
+        /// </summary>
+        public static string ErrorGhostscriptConversionFailed {
+            get {
+                return ResourceManager.GetString("ErrorGhostscriptConversionFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ghostscript did not create a valid output file..
+        /// </summary>
+        public static string ErrorGhostscriptEmptyOutput {
+            get {
+                return ResourceManager.GetString("ErrorGhostscriptEmptyOutput", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No extractable text was found in the PDF. The file may be scanned and require OCR..
+        /// </summary>
+        public static string ErrorNoExtractableText {
+            get {
+                return ResourceManager.GetString("ErrorNoExtractableText", resourceCulture);
             }
         }
         

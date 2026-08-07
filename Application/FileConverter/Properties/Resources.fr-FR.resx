@@ -456,6 +456,9 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ErrorCantFindFFMPEG" xml:space="preserve">
     <value>L'exécutable ffmpeg n'a pas été trouvé. Vous pouvez essayer de réinstaller l'application pour corriger le problème.</value>
   </data>
+  <data name="ErrorCantFindGhostscript" xml:space="preserve">
+    <value>L'exécutable Ghostscript n'a pas été trouvé. Vous pouvez essayer de réinstaller l'application pour corriger le problème.</value>
+  </data>
   <data name="ErrorCDAExtractionFailed" xml:space="preserve">
     <value>Échec de l'extraction de la piste audio.</value>
   </data>
@@ -464,6 +467,18 @@ utilisez MAJ pour une version en majuscules</value>
   </data>
   <data name="ErrorFailedToLaunchFFMPEG" xml:space="preserve">
     <value>Ffmpeg n'a pas pu être lancé.</value>
+  </data>
+  <data name="ErrorFailedToLaunchGhostscript" xml:space="preserve">
+    <value>Ghostscript n'a pas pu être lancé.</value>
+  </data>
+  <data name="ErrorGhostscriptConversionFailed" xml:space="preserve">
+    <value>La conversion Ghostscript a échoué (code de sortie {0}). {1}</value>
+  </data>
+  <data name="ErrorGhostscriptEmptyOutput" xml:space="preserve">
+    <value>Ghostscript n'a pas créé de fichier de sortie valide.</value>
+  </data>
+  <data name="ErrorNoExtractableText" xml:space="preserve">
+    <value>Aucun texte extractible n'a été trouvé dans le PDF. Le fichier est peut-être numérisé et nécessite un OCR.</value>
   </data>
   <data name="ErrorFailToCreateOutputPathFolders" xml:space="preserve">
     <value>Les dossiers de destination n'ont pas pu être créés.</value>

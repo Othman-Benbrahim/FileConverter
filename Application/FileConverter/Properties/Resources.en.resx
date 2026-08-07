@@ -442,6 +442,9 @@ use maj for uppercase version</value>
   <data name="ErrorCantFindFFMPEG" xml:space="preserve">
     <value>Fail to find ffmpeg executable. You should try to reinstall the application.</value>
   </data>
+  <data name="ErrorCantFindGhostscript" xml:space="preserve">
+    <value>Fail to find Ghostscript executable. You should try to reinstall the application.</value>
+  </data>
   <data name="ErrorCDAExtractionFailed" xml:space="preserve">
     <value>Audio CD track extraction failed</value>
   </data>
@@ -450,6 +453,18 @@ use maj for uppercase version</value>
   </data>
   <data name="ErrorFailedToLaunchFFMPEG" xml:space="preserve">
     <value>Failed to launch ffmpeg.</value>
+  </data>
+  <data name="ErrorFailedToLaunchGhostscript" xml:space="preserve">
+    <value>Failed to launch Ghostscript.</value>
+  </data>
+  <data name="ErrorGhostscriptConversionFailed" xml:space="preserve">
+    <value>Ghostscript conversion failed (exit code {0}). {1}</value>
+  </data>
+  <data name="ErrorGhostscriptEmptyOutput" xml:space="preserve">
+    <value>Ghostscript did not create a valid output file.</value>
+  </data>
+  <data name="ErrorNoExtractableText" xml:space="preserve">
+    <value>No extractable text was found in the PDF. The file may be scanned and require OCR.</value>
   </data>
   <data name="ErrorFailToCreateOutputPathFolders" xml:space="preserve">
     <value>Failed to create output path folders.</value>
