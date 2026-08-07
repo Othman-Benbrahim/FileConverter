@@ -399,6 +399,9 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ConversionStateConversion" xml:space="preserve">
     <value>Conversion</value>
   </data>
+  <data name="ConversionStateDetectTextLayer" xml:space="preserve">
+    <value>Détection de la couche texte du PDF</value>
+  </data>
   <data name="ConversionStateDone" xml:space="preserve">
     <value>Réussi</value>
   </data>
@@ -410,6 +413,9 @@ utilisez MAJ pour une version en majuscules</value>
   </data>
   <data name="ConversionStateInQueue" xml:space="preserve">
     <value>En attente</value>
+  </data>
+  <data name="ConversionStateOCR" xml:space="preserve">
+    <value>Reconnaissance optique de caractères</value>
   </data>
   <data name="ConversionStateReadIntputImage" xml:space="preserve">
     <value>Lecture de l'image d'origine</value>
@@ -479,6 +485,15 @@ utilisez MAJ pour une version en majuscules</value>
   </data>
   <data name="ErrorNoExtractableText" xml:space="preserve">
     <value>Aucun texte extractible n'a été trouvé dans le PDF. Le fichier est peut-être numérisé et nécessite un OCR.</value>
+  </data>
+  <data name="ErrorNoTextAfterOCR" xml:space="preserve">
+    <value>L'OCR est terminé, mais aucun texte exploitable n'a été reconnu dans le PDF.</value>
+  </data>
+  <data name="ErrorOCRFailed" xml:space="preserve">
+    <value>L'OCR local a échoué (code de sortie {0}). {1}</value>
+  </data>
+  <data name="ErrorOCRLanguageDataMissing" xml:space="preserve">
+    <value>Les données linguistiques de l'OCR local sont absentes de « {0} ». Essayez de réinstaller l'application.</value>
   </data>
   <data name="ErrorFailToCreateOutputPathFolders" xml:space="preserve">
     <value>Les dossiers de destination n'ont pas pu être créés.</value>

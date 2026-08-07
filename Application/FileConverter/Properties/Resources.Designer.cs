@@ -248,6 +248,15 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("ConversionStateConversion", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Detecting PDF text layer.
+        /// </summary>
+        public static string ConversionStateDetectTextLayer {
+            get {
+                return ResourceManager.GetString("ConversionStateDetectTextLayer", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Done.
@@ -282,6 +291,15 @@ namespace FileConverter.Properties {
         public static string ConversionStateInQueue {
             get {
                 return ResourceManager.GetString("ConversionStateInQueue", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Optical character recognition.
+        /// </summary>
+        public static string ConversionStateOCR {
+            get {
+                return ResourceManager.GetString("ConversionStateOCR", resourceCulture);
             }
         }
         
@@ -588,6 +606,33 @@ namespace FileConverter.Properties {
         public static string ErrorNoExtractableText {
             get {
                 return ResourceManager.GetString("ErrorNoExtractableText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to OCR completed, but no usable text was recognized in the PDF..
+        /// </summary>
+        public static string ErrorNoTextAfterOCR {
+            get {
+                return ResourceManager.GetString("ErrorNoTextAfterOCR", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Local OCR failed (exit code {0}). {1}.
+        /// </summary>
+        public static string ErrorOCRFailed {
+            get {
+                return ResourceManager.GetString("ErrorOCRFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Local OCR language data is missing from &apos;{0}&apos;. Try reinstalling the application..
+        /// </summary>
+        public static string ErrorOCRLanguageDataMissing {
+            get {
+                return ResourceManager.GetString("ErrorOCRLanguageDataMissing", resourceCulture);
             }
         }
         

@@ -388,6 +388,9 @@ use maj for uppercase version</value>
   <data name="ConversionStateConversion" xml:space="preserve">
     <value>Conversion</value>
   </data>
+  <data name="ConversionStateDetectTextLayer" xml:space="preserve">
+    <value>Detecting PDF text layer</value>
+  </data>
   <data name="ConversionStateDone" xml:space="preserve">
     <value>Done</value>
   </data>
@@ -399,6 +402,9 @@ use maj for uppercase version</value>
   </data>
   <data name="ConversionStateInQueue" xml:space="preserve">
     <value>In queue</value>
+  </data>
+  <data name="ConversionStateOCR" xml:space="preserve">
+    <value>Optical character recognition</value>
   </data>
   <data name="ConversionStateReadIntputImage" xml:space="preserve">
     <value>Read input image</value>
@@ -468,6 +474,15 @@ use maj for uppercase version</value>
   </data>
   <data name="ErrorNoExtractableText" xml:space="preserve">
     <value>No extractable text was found in the PDF. The file may be scanned and require OCR.</value>
+  </data>
+  <data name="ErrorNoTextAfterOCR" xml:space="preserve">
+    <value>OCR completed, but no usable text was recognized in the PDF.</value>
+  </data>
+  <data name="ErrorOCRFailed" xml:space="preserve">
+    <value>Local OCR failed (exit code {0}). {1}</value>
+  </data>
+  <data name="ErrorOCRLanguageDataMissing" xml:space="preserve">
+    <value>Local OCR language data is missing from '{0}'. Try reinstalling the application.</value>
   </data>
   <data name="ErrorFailToCreateOutputPathFolders" xml:space="preserve">
     <value>Fail to create output path folders.</value>
