@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 2.5.2
+
+- Fix: let the managed application and legacy extension resolve `FileConverter.exe` from HKLM when the per-user registry key is absent.
+- Fix: prevent recoverable post-install preset initialization failures from invalidating the MSI after `InstallFinalize`.
+
 ## Version 2.5.1
 
 - Fix: resolve `FileConverter.exe` from the machine registry when the packaged Windows 11 COM server cannot access the user registry value.

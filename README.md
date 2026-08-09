@@ -1,4 +1,4 @@
-# File Converter — build modifié 2.5.1
+# File Converter — build modifié 2.5.2
 
 File Converter permet de convertir et compresser des fichiers depuis le menu contextuel de l’Explorateur Windows. Ce dépôt est une évolution du projet libre [Tichau/FileConverter](https://github.com/Tichau/FileConverter), toujours distribué sous GPL v3.
 
@@ -169,7 +169,8 @@ Erreurs courantes :
 - `0x800B0109` : le certificat auto-signé n’est pas approuvé par la machine ; ouvrir `cmd` en administrateur et relancer le script de certificat, qui l’importe dans `LocalMachine\TrustedPeople` et `LocalMachine\Root`.
 - `0x80073CF9` : la même version du package est déjà inscrite ; désinstaller d’abord l’ancien MSI ou exécuter `powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell | Remove-AppxPackage"`.
 - menu absent après installation : redémarrer l’Explorateur ou fermer puis rouvrir la session.
-- message `Can't retrieve the file converter executable path` : vérifier `HKLM\Software\FileConverter\Path` et réinstaller la version 2.5.1 ou ultérieure.
+- erreur MSI 1722/1603 pendant `PostInstallInit` : la version 2.5.2 lit correctement le chemin machine et rend cette initialisation récupérable.
+- message `Can't retrieve the file converter executable path` : vérifier `HKLM\Software\FileConverter\Path` et réinstaller la version 2.5.2 ou ultérieure.
 
 ## Fichiers structurants de cette évolution
 
