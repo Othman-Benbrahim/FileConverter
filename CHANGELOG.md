@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 2.5.0
+
+- New: central catalog for 22 document formats.
+- New: ODT, RTF, standalone HTML, EPUB 3, LaTeX and reStructuredText outputs.
+- New: modular document router using Pandoc, LibreOffice and optional Typst.
+- New: automatic external-tool detection and actionable dependency errors.
+- New: isolated LibreOffice profiles and low-fidelity conversion warnings.
+- Change: sign the generated MSI from `build-release.cmd`, with optional RFC 3161 timestamping.
+- Change: preserve the Ghostscript/OCR route for PDF inputs and Microsoft Office fallback for legacy PDF/Markdown conversions.
+- Change: update application, MSI and Windows 11 package versions to 2.5.0.
+
 ## Version 2.2
 
 - New: AMD AMF hardware acceleration option for MP4/MKV H.264 conversions (thanks to bharatvansh).

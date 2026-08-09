@@ -1,4 +1,4 @@
-# File Converter — build modifié 2.4.0
+# File Converter — build modifié 2.5.0
 
 File Converter permet de convertir et compresser des fichiers depuis le menu contextuel de l’Explorateur Windows. Ce dépôt est une évolution du projet libre [Tichau/FileConverter](https://github.com/Tichau/FileConverter), toujours distribué sous GPL v3.
 
@@ -16,6 +16,17 @@ File Converter permet de convertir et compresser des fichiers depuis le menu con
 - Découpage d’un PDF en un fichier par page avec `PDF tools/Split PDF`.
 - Conversion PDF ou TXT vers Markdown avec le préréglage `To Markdown`.
 - Ghostscript mis à jour en 10.07.1 et fichiers de licence associés au MSI.
+
+### Routeur documentaire ouvert
+
+- Catalogue central de 22 formats : DOC, DOCX, ODT, RTF, TXT, Markdown, HTML, EPUB, LaTeX, reStructuredText, Org, AsciiDoc, DocBook, OPML, PPT, PPTX, ODP, XLS, XLSX, ODS, CSV et PDF.
+- Nouveaux formats de sortie configurables : ODT, RTF, HTML autonome, EPUB 3, LaTeX (`.tex`) et reStructuredText (`.rst`).
+- Extension des sorties DOCX, TXT, Markdown et PDF aux formats documentaires compatibles.
+- Routage automatique vers Pandoc, LibreOffice, Typst ou les moteurs historiques selon la paire source/cible et les outils présents.
+- Priorité conservée au moteur Ghostscript/OCR pour les PDF en entrée ; le nouveau routeur ne contourne donc pas la détection des scans.
+- Conversion LibreOffice exécutée dans un profil temporaire isolé afin de ne pas interférer avec une session LibreOffice déjà ouverte.
+- Messages explicites lorsqu’une dépendance manque, contrôle du fichier produit et avertissement avant une conversion estimée à faible fidélité.
+- Les présentations et feuilles de calcul sont volontairement limitées à la sortie PDF. Les formats complexes peuvent perdre des éléments de mise en page lors d’une conversion structurelle avec Pandoc.
 
 ### Menu Windows
 
@@ -35,7 +46,7 @@ File Converter permet de convertir et compresser des fichiers depuis le menu con
 - Prise en charge séparée des moteurs unitaires et des moteurs par lot.
 - Sélection d’un moteur par fichier, ce qui conserve les sélections mixtes prises en charge auparavant.
 - API d’enregistrement et de retrait permettant d’ajouter un moteur sans modifier la fabrique.
-- Moteurs intégrés : fusion/découpage PDF, Ghostscript/OCR, Markdown, Word, Excel, PowerPoint, CDA, ICO, GIF, ImageMagick et FFmpeg.
+- Moteurs intégrés : fusion/découpage PDF, Ghostscript/OCR, routeur documentaire Pandoc/LibreOffice/Typst, Markdown, Word, Excel, PowerPoint, CDA, ICO, GIF, ImageMagick et FFmpeg.
 
 Exemple d’ajout au démarrage :
 
@@ -66,6 +77,30 @@ Dans Visual Studio Installer 2022 Community, installer :
 
 Le projet complet est indispensable : le ZIP correctif livré séparément doit être copié par-dessus une copie complète de FileConverter en conservant exactement les sous-dossiers.
 
+## Dépendances des conversions documentaires
+
+Les exécutables ne sont pas embarqués dans le dépôt ni dans le MSI. Le routeur les recherche à côté de `FileConverter.exe`, dans un sous-dossier `Tools`, dans leurs emplacements Windows habituels, puis dans `PATH`.
+
+Installez au minimum Pandoc pour les conversions structurelles :
+
+```bat
+winget install --source winget --exact --id JohnMacFarlane.Pandoc
+```
+
+LibreOffice est fortement recommandé et nécessaire pour les anciens formats DOC/RTF, les documents Office vers PDF et le repli PDF sans Typst :
+
+```bat
+winget install --source winget --exact --id TheDocumentFoundation.LibreOffice
+```
+
+Typst est facultatif ; lorsqu’il est présent, Pandoc l’utilise pour produire directement les PDF depuis les formats de balisage :
+
+```bat
+winget install --source winget --exact --id Typst.Typst
+```
+
+Après installation, fermez puis relancez File Converter. Aucune recompilation n’est nécessaire.
+
 ## Générer un MSI depuis `cmd`
 
 Le menu principal de Windows 11 impose un package MSIX signé. Pour un test sur votre propre poste, créez une seule fois un certificat de développement. Depuis `cmd` :
@@ -75,7 +110,14 @@ cd /d "C:\Users\othma\Desktop\FileConverterModif\FileConverter-integration"
 Packaging\ModernMenu\create-development-certificate.cmd VotreMotDePassePfx
 ```
 
-Le script demande confirmation, crée un PFX local et place uniquement son certificat public dans `Cert:\CurrentUser\TrustedPeople`. Le PFX contient la clé privée : ne le publiez jamais et ne l’ajoutez pas au ZIP ou au dépôt.
+Ouvrez `cmd` **en tant qu’administrateur**. Le script demande confirmation, crée un PFX local et place son certificat public dans `Cert:\LocalMachine\TrustedPeople` et `Cert:\LocalMachine\Root`. Cette approbation de racine est réservée aux essais sur une machine maîtrisée. Le PFX contient la clé privée : ne publiez jamais le PFX, son mot de passe ou ce certificat de développement.
+
+Fichiers créés pour les essais locaux :
+
+```text
+Packaging\ModernMenu\FileConverter-Development.pfx
+Packaging\ModernMenu\FileConverter-Development.cer
+```
 
 Générez ensuite toute la release :
 
@@ -84,7 +126,7 @@ cd /d "C:\Users\othma\Desktop\FileConverterModif\FileConverter-integration"
 build-release.cmd "Packaging\ModernMenu\FileConverter-Development.pfx" "VotreMotDePassePfx"
 ```
 
-Le script appelle automatiquement `VsDevCmd.bat`, compile l’application, l’extension historique et la DLL C++ x64, construit et signe le package sparse, puis génère le MSI avec WiX.
+Le script appelle automatiquement `VsDevCmd.bat`, compile l’application, l’extension historique et la DLL C++ x64, construit et signe le package sparse, génère le MSI avec WiX, puis signe également le MSI avec le même PFX. Il n’est plus nécessaire d’appeler `signtool` à la main.
 
 Résultat :
 
@@ -95,10 +137,15 @@ Installer\bin\x64\Release\FileConverter-setup.msi
 Pour une release distribuée à d’autres machines, utilisez un certificat de production dont la chaîne est reconnue par Windows. Un certificat auto-signé approuvé seulement sur votre poste ne convient pas à la distribution. Le sujet du certificat doit correspondre au champ `Publisher` ; cette version utilise `CN=File Converter Community Build` dans :
 
 - `Packaging\ModernMenu\AppxManifest.xml` ;
-- `Application\FileConverter\app.manifest` ;
 - `Packaging\ModernMenu\build-modern-menu-package.cmd` (`EXPECTED_SUBJECT`).
 
-Si votre certificat de production possède un autre sujet, modifiez ces trois valeurs de façon strictement identique avant la compilation. Le MSIX est signé par `build-release.cmd`. La signature Authenticode du MSI reste pilotée par l’éventuel fichier privé `Installer\Installer.sign` du projet d’origine.
+Si votre certificat de production possède un autre sujet, modifiez ces deux valeurs de façon strictement identique avant la compilation. Pour horodater les signatures d’une release publique, passez l’URL HTTPS fournie par votre autorité de certification en troisième argument :
+
+```bat
+build-release.cmd "Packaging\ModernMenu\Production.pfx" "VotreMotDePassePfx" "https://adresse-horodatage-fournie-par-votre-autorite"
+```
+
+Le PFX utilisé signe le MSIX et le MSI. Ne placez jamais le PFX ni son mot de passe dans GitHub ou dans les fichiers de release.
 
 ## Installation et vérification
 
@@ -119,7 +166,7 @@ Sous Windows 11, `File Converter` doit apparaître dans le premier menu contextu
 
 Erreurs courantes :
 
-- `0x800B0109` : le certificat auto-signé n’est pas dans `CurrentUser\TrustedPeople` ; relancer le script de certificat et accepter l’import.
+- `0x800B0109` : le certificat auto-signé n’est pas approuvé par la machine ; ouvrir `cmd` en administrateur et relancer le script de certificat, qui l’importe dans `LocalMachine\TrustedPeople` et `LocalMachine\Root`.
 - `0x80073CF9` : la même version du package est déjà inscrite ; désinstaller d’abord l’ancien MSI ou exécuter `powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell | Remove-AppxPackage"`.
 - menu absent après installation : redémarrer l’Explorateur ou fermer puis rouvrir la session.
 - échec du menu moderne mais MSI installé : utiliser **Afficher plus d’options** ; l’extension SharpShell est conservée volontairement comme repli.
@@ -127,16 +174,23 @@ Erreurs courantes :
 ## Fichiers structurants de cette évolution
 
 - `Application\FileConverter\ConversionEngines\` : contrat, registre et moteurs intégrés.
+- `Application\FileConverter\ConversionEngines\DocumentFormatCatalog.cs` : catalogue indépendant des 22 formats.
+- `Application\FileConverter\ConversionEngines\DocumentConversionRouter.cs` : choix de la chaîne de conversion disponible la plus fidèle.
+- `Application\FileConverter\ConversionEngines\DocumentToolDetector.cs` : détection locale de Pandoc, LibreOffice et Typst.
+- `Application\FileConverter\ConversionJobs\ConversionJob_Document.cs` : exécution, annulation, contrôle et nettoyage des conversions documentaires.
 - `Application\FileConverterModernMenu\` : serveur COM natif `IExplorerCommand` x64.
 - `Packaging\ModernMenu\` : manifeste, ressources, certificat de développement et création du MSIX sparse.
 - `Installer\Product.wxs` : déploiement, inscription et désinscription des deux menus.
-- `build-release.cmd` : génération complète de la release depuis `cmd`.
+- `build-release.cmd` : génération et signature complètes du MSIX et du MSI depuis `cmd`.
 
 ## Middlewares
 
 - **FFmpeg 8.0.1** pour l’audio et la vidéo.
 - **ImageMagick 14.10** pour les images et certains PDF.
 - **Ghostscript 10.07.1** pour les PDF et l’OCR local.
+- **Pandoc** pour les conversions documentaires structurelles (installation séparée).
+- **LibreOffice** pour les documents bureautiques et certaines sorties PDF (installation séparée).
+- **Typst** pour la génération directe de PDF par Pandoc (installation séparée facultative).
 - Modèles OCR français et anglais issus de `tessdata_fast`.
 - **SharpShell 2.7.2** pour le menu historique.
 - **Markdown.XAML** pour l’affichage Markdown dans l’application.
