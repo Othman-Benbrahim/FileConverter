@@ -37,8 +37,8 @@ namespace FileConverter.ConversionEngines
     {
         public static DocumentConversionRoute Select(string sourceExtension, OutputType outputType)
         {
-            DocumentFormatDefinition sourceFormat;
-            DocumentFormatDefinition targetFormat;
+            DocumentFormatDefinition sourceFormat = null;
+            DocumentFormatDefinition targetFormat = null;
             DocumentToolPaths tools = DocumentToolDetector.Detect();
 
             if (!DocumentFormatCatalog.TryGetByExtension(sourceExtension, out sourceFormat) ||
