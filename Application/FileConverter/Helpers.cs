@@ -10,6 +10,7 @@ namespace FileConverter
     using System.Threading;
 
     using FileConverter.ConversionJobs;
+    using FileConverter.ConversionEngines;
     using FileConverter.Services;
 
     using SharpShell.Helpers;
@@ -23,7 +24,8 @@ namespace FileConverter
             "3gp","3gpp","aac","aiff","ape","arw","avi","avif","bik","bmp","cda","cr2","dds","dng","doc","docx",
             "exr","flac","flv","gif","heic","ico","jfif","jpg","jpeg","m4a","m4b","m4v","mkv","mov","mp3","mp4",
             "mpg","mpeg","nef","odp","ods","odt","oga","ogg","ogv","opus","pdf","png","ppt","pptx","psd",
-            "raf", "rm","svg","tga","tif","tiff", "ts", "vob","wav","webm","webp","wma","wmv","xls","xlsx"
+            "raf", "rm","svg","tga","tif","tiff", "ts", "txt", "vob","wav","webm","webp","wma","wmv","xls","xlsx",
+            "adoc","asciidoc","csv","dbk","docbook","epub","htm","html","latex","markdown","md","opml","org","rst","rtf","tex","xml"
         };
 
         public static string GetExtensionCategory(string extension)
@@ -93,13 +95,30 @@ namespace FileConverter
 
                 case "pdf":
                 case "txt":
+                case "adoc":
+                case "asciidoc":
+                case "csv":
+                case "dbk":
                 case "doc":
+                case "docbook":
                 case "docx":
+                case "epub":
+                case "htm":
+                case "html":
+                case "latex":
+                case "markdown":
+                case "md":
+                case "opml":
+                case "org":
                 case "ppt":
                 case "pptx":
                 case "odp":
                 case "ods":
                 case "odt":
+                case "rst":
+                case "rtf":
+                case "tex":
+                case "xml":
                 case "xls":
                 case "xlsx":
                     return InputCategoryNames.Document;
@@ -225,10 +244,16 @@ namespace FileConverter
                     return category == InputCategoryNames.Image || category == InputCategoryNames.Video || category == InputCategoryNames.AnimatedImage;
 
                 case OutputType.Docx:
+                case OutputType.Epub:
+                case OutputType.Html:
+                case OutputType.Latex:
                 case OutputType.Md:
+                case OutputType.Odt:
                 case OutputType.Pdf:
                 case OutputType.PdfMerge:
                 case OutputType.PdfSplit:
+                case OutputType.Rst:
+                case OutputType.Rtf:
                 case OutputType.Txt:
                     return category == InputCategoryNames.Document ||
                            (outputType == OutputType.Pdf && category == InputCategoryNames.Image);
@@ -246,14 +271,12 @@ namespace FileConverter
                 return extension == "pdf";
             }
 
-            if (outputType == OutputType.Docx || outputType == OutputType.Txt)
+            DocumentFormatDefinition sourceFormat;
+            DocumentFormatDefinition targetFormat;
+            if (DocumentFormatCatalog.TryGetByOutputType(outputType, out targetFormat))
             {
-                return extension == "pdf";
-            }
-
-            if (outputType == OutputType.Md)
-            {
-                return extension == "pdf" || extension == "txt" || extension == "doc" || extension == "docx" || extension == "odt";
+                return DocumentFormatCatalog.TryGetByExtension(extension, out sourceFormat) ||
+                       (outputType == OutputType.Pdf && GetExtensionCategory(extension) == InputCategoryNames.Image);
             }
 
             return IsOutputTypeCompatibleWithCategory(outputType, GetExtensionCategory(extension));
@@ -264,6 +287,12 @@ namespace FileConverter
             if (outputType == OutputType.PdfMerge || outputType == OutputType.PdfSplit)
             {
                 return "pdf";
+            }
+
+            DocumentFormatDefinition documentFormat;
+            if (DocumentFormatCatalog.TryGetByOutputType(outputType, out documentFormat))
+            {
+                return documentFormat.PrimaryExtension;
             }
 
             return outputType.ToString().ToLowerInvariant();

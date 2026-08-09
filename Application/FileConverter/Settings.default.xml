@@ -677,6 +677,24 @@
         <InputTypes>pptx</InputTypes>
         <InputTypes>xls</InputTypes>
         <InputTypes>xlsx</InputTypes>
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>csv</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
         <InputTypes>arw</InputTypes>
         <InputTypes>bmp</InputTypes>
         <InputTypes>cr2</InputTypes>
@@ -701,21 +719,201 @@
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>
     <ConversionPreset Name="To Docx" OutputType="Docx" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>csv</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
         <InputTypes>pdf</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
         <InputPostConversionAction>None</InputPostConversionAction>
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>
     <ConversionPreset Name="To Txt" OutputType="Txt" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>csv</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
         <InputTypes>pdf</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>xml</InputTypes>
         <InputPostConversionAction>None</InputPostConversionAction>
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>
     <ConversionPreset Name="To Markdown" OutputType="Md" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>csv</InputTypes>
+        <InputTypes>dbk</InputTypes>
         <InputTypes>pdf</InputTypes>
         <InputTypes>txt</InputTypes>
         <InputTypes>doc</InputTypes>
         <InputTypes>docx</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>latex</InputTypes>
         <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>xml</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To ODT" OutputType="Odt" IsDefaultSettings="true">
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To RTF" OutputType="Rtf" IsDefaultSettings="true">
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To HTML" OutputType="Html" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>csv</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To EPUB" OutputType="Epub" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To LaTeX" OutputType="Latex" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rst</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
+        <InputPostConversionAction>None</InputPostConversionAction>
+        <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
+    </ConversionPreset>
+    <ConversionPreset Name="Documents/To reStructuredText" OutputType="Rst" IsDefaultSettings="true">
+        <InputTypes>adoc</InputTypes>
+        <InputTypes>asciidoc</InputTypes>
+        <InputTypes>dbk</InputTypes>
+        <InputTypes>doc</InputTypes>
+        <InputTypes>docbook</InputTypes>
+        <InputTypes>docx</InputTypes>
+        <InputTypes>epub</InputTypes>
+        <InputTypes>html</InputTypes>
+        <InputTypes>htm</InputTypes>
+        <InputTypes>latex</InputTypes>
+        <InputTypes>markdown</InputTypes>
+        <InputTypes>md</InputTypes>
+        <InputTypes>odt</InputTypes>
+        <InputTypes>opml</InputTypes>
+        <InputTypes>org</InputTypes>
+        <InputTypes>rtf</InputTypes>
+        <InputTypes>tex</InputTypes>
+        <InputTypes>txt</InputTypes>
+        <InputTypes>xml</InputTypes>
         <InputPostConversionAction>None</InputPostConversionAction>
         <OutputFileNameTemplate>(p)(f)</OutputFileNameTemplate>
     </ConversionPreset>

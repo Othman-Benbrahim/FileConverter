@@ -115,6 +115,10 @@
     <Compile Include="ConversionJobs\ConversionFlags.cs" />
     <Compile Include="ConversionEngines\BuiltInConversionEngines.cs" />
     <Compile Include="ConversionEngines\ConversionEngineRegistry.cs" />
+    <Compile Include="ConversionEngines\DocumentConversionRouter.cs" />
+    <Compile Include="ConversionEngines\DocumentFormatCatalog.cs" />
+    <Compile Include="ConversionEngines\DocumentFormatDefinition.cs" />
+    <Compile Include="ConversionEngines\DocumentToolDetector.cs" />
     <Compile Include="ConversionEngines\IConversionEngine.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Office.cs" />
     <Compile Include="ConversionJobs\ConversionJob_PowerPoint.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="ConversionJobs\ConversionJob_GhostscriptBase.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Ico.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Markdown.cs" />
+    <Compile Include="ConversionJobs\ConversionJob_Document.cs" />
     <Compile Include="ConversionJobs\ConversionJob_PdfTools.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Excel.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Word.cs" />
