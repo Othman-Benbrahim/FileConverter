@@ -545,10 +545,16 @@ namespace FileConverter
 
                 // Documents
                 case OutputType.Docx:
+                case OutputType.Epub:
+                case OutputType.Html:
+                case OutputType.Latex:
                 case OutputType.Md:
+                case OutputType.Odt:
                 case OutputType.Pdf:
                 case OutputType.PdfMerge:
                 case OutputType.PdfSplit:
+                case OutputType.Rst:
+                case OutputType.Rtf:
                 case OutputType.Txt:
                     break;
 
