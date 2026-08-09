@@ -1,4 +1,4 @@
-# File Converter — build modifié 2.5.0
+# File Converter — build modifié 2.5.1
 
 File Converter permet de convertir et compresser des fichiers depuis le menu contextuel de l’Explorateur Windows. Ce dépôt est une évolution du projet libre [Tichau/FileConverter](https://github.com/Tichau/FileConverter), toujours distribué sous GPL v3.
 
@@ -30,13 +30,13 @@ File Converter permet de convertir et compresser des fichiers depuis le menu con
 
 ### Menu Windows
 
-- Conservation de l’extension SharpShell historique, visible sous **Afficher plus d’options** dans Windows 11. Elle sert aussi de solution de repli sous Windows 10 ou si le package moderne ne peut pas être inscrit.
+- Conservation de l’extension SharpShell historique sous Windows 10. Sous Windows 11, son inscription est retirée automatiquement afin d’éviter un menu `File Converter` en double.
 - Ajout d’une DLL native x64 `IExplorerCommand` pour le menu contextuel principal de Windows 11.
 - Affichage dynamique des seuls préréglages compatibles avec tous les fichiers sélectionnés.
 - Gestion de la fusion PDF uniquement lorsqu’au moins deux PDF sont sélectionnés.
 - Accès à `Configure presets...` dans le sous-menu moderne.
 - Transmission de grandes sélections par fichier temporaire UTF-8, supprimé par l’application après lecture.
-- Recherche de l’exécutable par `HKCU\Software\FileConverter\Path`, avec repli sur le dossier de la DLL.
+- Recherche de l’exécutable par `HKCU`, puis `HKLM\Software\FileConverter\Path`, avec repli sur le dossier de la DLL.
 - Déploiement du menu moderne au moyen d’un package MSIX sparse signé, inscrit automatiquement par le MSI.
 
 ### Architecture modulaire des moteurs
@@ -162,14 +162,14 @@ Vérifiez l’inscription du package moderne :
 powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell"
 ```
 
-Sous Windows 11, `File Converter` doit apparaître dans le premier menu contextuel. L’extension historique reste disponible dans **Afficher plus d’options**.
+Sous Windows 11, `File Converter` doit apparaître une seule fois dans le premier menu contextuel. Sous Windows 10, l’extension SharpShell historique reste utilisée.
 
 Erreurs courantes :
 
 - `0x800B0109` : le certificat auto-signé n’est pas approuvé par la machine ; ouvrir `cmd` en administrateur et relancer le script de certificat, qui l’importe dans `LocalMachine\TrustedPeople` et `LocalMachine\Root`.
 - `0x80073CF9` : la même version du package est déjà inscrite ; désinstaller d’abord l’ancien MSI ou exécuter `powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell | Remove-AppxPackage"`.
 - menu absent après installation : redémarrer l’Explorateur ou fermer puis rouvrir la session.
-- échec du menu moderne mais MSI installé : utiliser **Afficher plus d’options** ; l’extension SharpShell est conservée volontairement comme repli.
+- message `Can't retrieve the file converter executable path` : vérifier `HKLM\Software\FileConverter\Path` et réinstaller la version 2.5.1 ou ultérieure.
 
 ## Fichiers structurants de cette évolution
 

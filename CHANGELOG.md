@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 2.5.1
+
+- Fix: resolve `FileConverter.exe` from the machine registry when the packaged Windows 11 COM server cannot access the user registry value.
+- Fix: remove the legacy SharpShell registration on Windows 11 to prevent a duplicated File Converter menu; keep it enabled on Windows 10.
+- Fix: initialize document router variables explicitly for the WPF temporary assembly build.
+- Fix: initialize default preset settings for the six document output formats added in 2.5.0.
+
 ## Version 2.5.0
 
 - New: central catalog for 22 document formats.
