@@ -1,13 +1,15 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.2">
   <PropertyGroup>
-    <ProductVersion>2.3.0</ProductVersion>
+    <ProductVersion>2.5.0</ProductVersion>
+    <IncludeModernMenu Condition="'$(IncludeModernMenu)' == ''">0</IncludeModernMenu>
+    <DefineConstants>IncludeModernMenu=$(IncludeModernMenu)</DefineConstants>
     <OutputName>FileConverter-setup</OutputName> <!-- https://github.com/firegiant/HeatWaveSupport/issues/73 -->
       <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <Target Name="CollectSuggestedVisualStudioComponentIds" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>$(DefineConstants);Debug</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="WixToolset.Heat" Version="5.0.2" />
@@ -29,6 +31,14 @@
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Application\FileConverterModernMenu\FileConverterModernMenu.vcxproj">
+      <Name>FileConverterModernMenu</Name>
+      <Project>{d0b40c7e-2978-4a90-a142-047d3185baab}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
   </ItemGroup>
