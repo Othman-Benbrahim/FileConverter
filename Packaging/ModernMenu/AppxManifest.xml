@@ -9,7 +9,7 @@
     xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
     IgnorableNamespaces="uap uap10 rescap com desktop4 desktop5">
 
-  <Identity Name="FileConverter.ModernShell" Publisher="CN=File Converter Community Build" Version="2.5.0.0" ProcessorArchitecture="neutral" />
+  <Identity Name="FileConverter.ModernShell" Publisher="CN=File Converter Community Build" Version="2.5.1.0" ProcessorArchitecture="neutral" />
 
   <Properties>
     <DisplayName>File Converter</DisplayName>
