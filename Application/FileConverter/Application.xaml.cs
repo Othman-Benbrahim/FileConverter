@@ -39,7 +39,7 @@ namespace FileConverter
                                                       {
                                                           Major = 2,
                                                           Minor = 5,
-                                                          Patch = 2,
+                                                          Patch = 3,
                                                       };
 
         private bool needToRunConversionThread;
