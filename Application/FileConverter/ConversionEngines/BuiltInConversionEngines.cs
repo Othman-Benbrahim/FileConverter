@@ -18,6 +18,7 @@ namespace FileConverter.ConversionEngines
             yield return new SingleInputEngine("Ghostscript document", 850, (preset, extension) => extension == "pdf" && IsOneOf(preset.OutputType, OutputType.Docx, OutputType.Md, OutputType.Txt), (preset, path) => new ConversionJob_Ghostscript(preset, path));
             yield return new SingleInputEngine("PDF split", 840, (preset, extension) => extension == "pdf" && preset.OutputType == OutputType.PdfSplit, (preset, path) => new ConversionJob_PdfSplit(preset, path));
             yield return new SingleInputEngine("Markdown", 830, (preset, extension) => extension == "txt" && preset.OutputType == OutputType.Md, (preset, path) => new ConversionJob_Markdown(preset, path));
+            yield return new SingleInputEngine("Document router", 825, CanHandleDocumentConversion, (preset, path) => new ConversionJob_Document(preset, path));
             yield return new SingleInputEngine("Microsoft Word", 800, (preset, extension) => IsOneOf(extension, "docx", "odt", "doc"), (preset, path) => new ConversionJob_Word(preset, path));
             yield return new SingleInputEngine("Microsoft Excel", 790, (preset, extension) => IsOneOf(extension, "xlsx", "ods", "xls"), (preset, path) => new ConversionJob_Excel(preset, path));
             yield return new SingleInputEngine("Microsoft PowerPoint", 780, (preset, extension) => IsOneOf(extension, "pptx", "odp", "ppt"), (preset, path) => new ConversionJob_PowerPoint(preset, path));
@@ -36,6 +37,28 @@ namespace FileConverter.ConversionEngines
         private static bool IsOneOf<T>(T value, params T[] values)
         {
             return values.Contains(value);
+        }
+
+        private static bool CanHandleDocumentConversion(ConversionPreset preset, string extension)
+        {
+            DocumentFormatDefinition sourceFormat;
+            DocumentFormatDefinition targetFormat;
+            if (!DocumentFormatCatalog.TryGetByExtension(extension, out sourceFormat) ||
+                !DocumentFormatCatalog.TryGetByOutputType(preset.OutputType, out targetFormat) ||
+                string.Equals(sourceFormat.Id, "pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            DocumentConversionRoute route = DocumentConversionRouter.Select(extension, preset.OutputType);
+            if (route.IsAvailable)
+            {
+                return true;
+            }
+
+            bool microsoftOfficeFallback = IsOneOf(extension, "doc", "docx", "odt", "ppt", "pptx", "odp", "xls", "xlsx", "ods");
+            bool legacyOfficeOutput = IsOneOf(preset.OutputType, OutputType.Md, OutputType.Pdf);
+            return !microsoftOfficeFallback || !legacyOfficeOutput;
         }
 
         private sealed class SingleInputEngine : IConversionEngine
