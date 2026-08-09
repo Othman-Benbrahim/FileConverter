@@ -1,6 +1,6 @@
 ﻿<!-- Upgrade documentation: http://wixtoolset.org/documentation/manual/v3/howtos/updates/major_upgrade.html -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Name="File Converter" Language="1033" Version="2.5.1" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
+    <Package Name="File Converter" Language="1033" Version="2.5.2" Manufacturer="Adrien Allard" UpgradeCode="e3ca717b-a897-418a-bbef-5c7e35c76e4b" InstallerVersion="500">
         <Icon Id="icon.ico" SourceFile="..\Resources\Icons\ApplicationIcon.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <SetProperty Id="ARPINSTALLLOCATION" Value="[ApplicationFolder]" After="CostFinalize" />
@@ -19,7 +19,10 @@
              separately after InstallFinalize. -->
         <CustomAction Id="InstallShell" ExeCommand="--register-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="ignore" Impersonate="no" FileRef="FileConverter.exe" />
         <CustomAction Id="UninstallShell" ExeCommand="--unregister-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="ignore" Impersonate="no" FileRef="FileConverter.exe" />
-        <CustomAction Id="PostInstallInit" ExeCommand="--post-install-init" Execute="immediate" FileRef="FileConverter.exe" />
+        <!-- Preset initialization is recoverable: the application loads Settings.default.xml on
+             first use if no user settings file exists. It must therefore never invalidate an MSI
+             after InstallFinalize. -->
+        <CustomAction Id="PostInstallInit" ExeCommand="--post-install-init" Execute="immediate" Return="ignore" FileRef="FileConverter.exe" />
         <?if $(var.IncludeModernMenu) = 1 ?>
         <CustomAction Id="RegisterModernMenu" ExeCommand="--register-modern-menu &quot;[INSTALLFOLDER]FileConverter.ModernMenu.msix&quot; &quot;[INSTALLFOLDER].&quot;" Execute="immediate" Return="ignore" FileRef="FileConverter.exe" />
         <CustomAction Id="UnregisterModernMenu" ExeCommand="--unregister-modern-menu" Execute="immediate" Return="ignore" FileRef="FileConverter.exe" />
