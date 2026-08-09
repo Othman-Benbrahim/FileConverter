@@ -37,6 +37,7 @@ namespace
     enum class CommandKind
     {
         Root,
+        Folder,
         Preset,
         Settings,
     };
@@ -48,6 +49,7 @@ namespace
         std::wstring DisplayName;
         std::wstring OutputType;
         std::vector<std::wstring> InputTypes;
+        std::vector<CommandDefinition> Children;
     };
 
     std::wstring ToLower(std::wstring value)
@@ -188,12 +190,6 @@ namespace
                 current.FullName = ReadAttribute(reader, L"Name");
                 current.OutputType = ReadAttribute(reader, L"OutputType");
                 current.DisplayName = current.FullName;
-                std::wstring::size_type separator = 0;
-                while ((separator = current.DisplayName.find(L'/', separator)) != std::wstring::npos)
-                {
-                    current.DisplayName.replace(separator, 1, L" › ");
-                    separator += 3;
-                }
 
                 inPreset = !current.FullName.empty();
             }
@@ -228,6 +224,68 @@ namespace
 
         stream->Release();
         return presets;
+    }
+
+    void AddPresetToHierarchy(std::vector<CommandDefinition>& commands, const CommandDefinition& preset)
+    {
+        std::vector<std::wstring> parts;
+        std::wstring::size_type start = 0;
+        while (start <= preset.FullName.size())
+        {
+            std::wstring::size_type separator = preset.FullName.find(L'/', start);
+            std::wstring part = preset.FullName.substr(start, separator == std::wstring::npos ? std::wstring::npos : separator - start);
+            if (!part.empty())
+            {
+                parts.push_back(part);
+            }
+
+            if (separator == std::wstring::npos)
+            {
+                break;
+            }
+
+            start = separator + 1;
+        }
+
+        if (parts.empty())
+        {
+            return;
+        }
+
+        std::vector<CommandDefinition>* level = &commands;
+        for (size_t index = 0; index + 1 < parts.size(); ++index)
+        {
+            auto folder = std::find_if(level->begin(), level->end(), [&](const CommandDefinition& command)
+            {
+                return command.Kind == CommandKind::Folder && _wcsicmp(command.DisplayName.c_str(), parts[index].c_str()) == 0;
+            });
+
+            if (folder == level->end())
+            {
+                CommandDefinition newFolder;
+                newFolder.Kind = CommandKind::Folder;
+                newFolder.DisplayName = parts[index];
+                level->push_back(newFolder);
+                folder = level->end() - 1;
+            }
+
+            level = &folder->Children;
+        }
+
+        CommandDefinition leaf = preset;
+        leaf.DisplayName = parts.back();
+        level->push_back(std::move(leaf));
+    }
+
+    std::vector<CommandDefinition> BuildCommandHierarchy(const std::vector<CommandDefinition>& presets)
+    {
+        std::vector<CommandDefinition> commands;
+        for (const CommandDefinition& preset : presets)
+        {
+            AddPresetToHierarchy(commands, preset);
+        }
+
+        return commands;
     }
 
     std::vector<std::wstring> GetSelectedPaths(IShellItemArray* items)
@@ -571,10 +629,14 @@ namespace
 
                 {
                     std::lock_guard<std::mutex> guard(this->syncRoot);
-                    this->subCommands = compatible;
+                    this->subCommands = BuildCommandHierarchy(compatible);
                 }
 
                 *state = compatible.empty() ? ECS_HIDDEN : ECS_ENABLED;
+            }
+            else if (this->definition.Kind == CommandKind::Folder)
+            {
+                *state = this->definition.Children.empty() ? ECS_HIDDEN : ECS_ENABLED;
             }
             else if (this->definition.Kind == CommandKind::Settings)
             {
@@ -590,7 +652,7 @@ namespace
 
         IFACEMETHODIMP Invoke(IShellItemArray* items, IBindCtx*) override
         {
-            if (this->definition.Kind == CommandKind::Root)
+            if (this->definition.Kind == CommandKind::Root || this->definition.Kind == CommandKind::Folder)
             {
                 return E_NOTIMPL;
             }
@@ -605,7 +667,7 @@ namespace
                 return E_POINTER;
             }
 
-            *flags = this->definition.Kind == CommandKind::Root ? ECF_HASSUBCOMMANDS : ECF_DEFAULT;
+            *flags = this->definition.Kind == CommandKind::Root || this->definition.Kind == CommandKind::Folder ? ECF_HASSUBCOMMANDS : ECF_DEFAULT;
             return S_OK;
         }
 
@@ -617,21 +679,26 @@ namespace
             }
 
             *commands = nullptr;
-            if (this->definition.Kind != CommandKind::Root)
+            if (this->definition.Kind != CommandKind::Root && this->definition.Kind != CommandKind::Folder)
             {
                 return E_NOTIMPL;
             }
 
             std::vector<CommandDefinition> snapshot;
+            if (this->definition.Kind == CommandKind::Root)
             {
                 std::lock_guard<std::mutex> guard(this->syncRoot);
                 snapshot = this->subCommands;
-            }
 
-            CommandDefinition settings;
-            settings.Kind = CommandKind::Settings;
-            settings.DisplayName = L"Configure presets...";
-            snapshot.push_back(settings);
+                CommandDefinition settings;
+                settings.Kind = CommandKind::Settings;
+                settings.DisplayName = L"Configure presets...";
+                snapshot.push_back(settings);
+            }
+            else
+            {
+                snapshot = this->definition.Children;
+            }
 
             *commands = new (std::nothrow) ExplorerCommandEnumerator(snapshot);
             return *commands == nullptr ? E_OUTOFMEMORY : S_OK;
