@@ -1,6 +1,6 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.2">
   <PropertyGroup>
-    <ProductVersion>2.5.0</ProductVersion>
+    <ProductVersion>2.5.1</ProductVersion>
     <IncludeModernMenu Condition="'$(IncludeModernMenu)' == ''">0</IncludeModernMenu>
     <DefineConstants>IncludeModernMenu=$(IncludeModernMenu)</DefineConstants>
     <OutputName>FileConverter-setup</OutputName> <!-- https://github.com/firegiant/HeatWaveSupport/issues/73 -->
