@@ -96,6 +96,12 @@ namespace
             return registryPath;
         }
 
+        registryPath = ReadRegistryString(HKEY_LOCAL_MACHINE, L"Software\\FileConverter", L"Path");
+        if (FileExists(registryPath))
+        {
+            return registryPath;
+        }
+
         std::wstring fallback = GetDirectoryName(GetModulePath()) + L"\\FileConverter.exe";
         return FileExists(fallback) ? fallback : std::wstring();
     }
