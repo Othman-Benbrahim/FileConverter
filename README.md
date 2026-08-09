@@ -1,4 +1,4 @@
-# File Converter — build modifié 2.5.2
+# File Converter — build modifié 2.5.3
 
 File Converter permet de convertir et compresser des fichiers depuis le menu contextuel de l’Explorateur Windows. Ce dépôt est une évolution du projet libre [Tichau/FileConverter](https://github.com/Tichau/FileConverter), toujours distribué sous GPL v3.
 
@@ -33,6 +33,8 @@ File Converter permet de convertir et compresser des fichiers depuis le menu con
 - Conservation de l’extension SharpShell historique sous Windows 10. Sous Windows 11, son inscription est retirée automatiquement afin d’éviter un menu `File Converter` en double.
 - Ajout d’une DLL native x64 `IExplorerCommand` pour le menu contextuel principal de Windows 11.
 - Affichage dynamique des seuls préréglages compatibles avec tous les fichiers sélectionnés.
+- Regroupement réel des préréglages dans des sous-menus (`Documents`, `PDF tools`) au lieu d’une longue liste aplatie.
+- Compilation UTF-8 de la DLL native afin d’éliminer les libellés corrompus de type `â€º`.
 - Gestion de la fusion PDF uniquement lorsqu’au moins deux PDF sont sélectionnés.
 - Accès à `Configure presets...` dans le sous-menu moderne.
 - Transmission de grandes sélections par fichier temporaire UTF-8, supprimé par l’application après lecture.
@@ -169,7 +171,7 @@ Erreurs courantes :
 - `0x800B0109` : le certificat auto-signé n’est pas approuvé par la machine ; ouvrir `cmd` en administrateur et relancer le script de certificat, qui l’importe dans `LocalMachine\TrustedPeople` et `LocalMachine\Root`.
 - `0x80073CF9` : la même version du package est déjà inscrite ; désinstaller d’abord l’ancien MSI ou exécuter `powershell.exe -NoProfile -Command "Get-AppxPackage FileConverter.ModernShell | Remove-AppxPackage"`.
 - menu absent après installation : redémarrer l’Explorateur ou fermer puis rouvrir la session.
-- erreur MSI 1722/1603 pendant `PostInstallInit` : la version 2.5.2 lit correctement le chemin machine et rend cette initialisation récupérable.
+- erreur MSI 1722/1603 pendant `PostInstallInit` : la version 2.5.2 ou ultérieure lit correctement le chemin machine et rend cette initialisation récupérable.
 - message `Can't retrieve the file converter executable path` : vérifier `HKLM\Software\FileConverter\Path` et réinstaller la version 2.5.2 ou ultérieure.
 
 ## Fichiers structurants de cette évolution

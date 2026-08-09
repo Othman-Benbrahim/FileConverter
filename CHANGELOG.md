@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 2.5.3
+
+- Fix: display modern Windows 11 presets in real nested folders instead of flattening preset paths into one long menu.
+- Fix: compile the native context-menu DLL as UTF-8 to prevent mojibake such as `â€º` in command labels.
+
 ## Version 2.5.2
 
 - Fix: let the managed application and legacy extension resolve `FileConverter.exe` from HKLM when the per-user registry key is absent.
