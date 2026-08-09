@@ -92,7 +92,13 @@ namespace FileConverter.ViewModels
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.PdfMerge));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.PdfSplit));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Docx));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Odt));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Rtf));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Md));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Html));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Epub));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Latex));
+            outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Rst));
             outputTypeViewModels.Add(new OutputTypeViewModel(OutputType.Txt));
             this.outputTypes = new ListCollectionView(outputTypeViewModels);
             this.outputTypes.GroupDescriptions.Add(new PropertyGroupDescription("Category"));
@@ -113,9 +119,7 @@ namespace FileConverter.ViewModels
                 }
 
                 if (this.SelectedPreset != null &&
-                    (this.SelectedPreset.Preset.OutputType == OutputType.Docx ||
-                     this.SelectedPreset.Preset.OutputType == OutputType.Txt ||
-                     this.SelectedPreset.Preset.OutputType == OutputType.PdfMerge ||
+                    (this.SelectedPreset.Preset.OutputType == OutputType.PdfMerge ||
                      this.SelectedPreset.Preset.OutputType == OutputType.PdfSplit))
                 {
                     yield return this.pdfInputCategory;

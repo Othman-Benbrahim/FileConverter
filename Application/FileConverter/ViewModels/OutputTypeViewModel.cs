@@ -37,6 +37,24 @@ namespace FileConverter.ViewModels
                     case OutputType.Md:
                         return Properties.Resources.OutputTypeMarkdown;
 
+                    case OutputType.Latex:
+                        return "LaTeX";
+
+                    case OutputType.Html:
+                        return "HTML";
+
+                    case OutputType.Epub:
+                        return "EPUB";
+
+                    case OutputType.Rst:
+                        return "reStructuredText";
+
+                    case OutputType.Rtf:
+                        return "RTF";
+
+                    case OutputType.Odt:
+                        return "ODT";
+
                     default:
                         return this.Type.ToString();
                 }
