@@ -36,6 +36,11 @@ namespace FileConverterExtension
                     PathHelpers.fileConverterRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\FileConverter");
                     if (PathHelpers.fileConverterRegistryKey == null)
                     {
+                        PathHelpers.fileConverterRegistryKey = Registry.LocalMachine.OpenSubKey(@"Software\FileConverter");
+                    }
+
+                    if (PathHelpers.fileConverterRegistryKey == null)
+                    {
                         throw new Exception("Can't retrieve file converter registry entry.");
                     }
                 }
