@@ -39,7 +39,7 @@ namespace FileConverter
                                                       {
                                                           Major = 2,
                                                           Minor = 5,
-                                                          Patch = 0,
+                                                          Patch = 1,
                                                       };
 
         private bool needToRunConversionThread;
@@ -284,7 +284,15 @@ namespace FileConverter
                                 string shellExtensionPath = args[index + 1];
                                 index++;
 
-                                if (!Helpers.RegisterShellExtension(shellExtensionPath))
+                                // Windows 11 uses the packaged IExplorerCommand menu. Remove any
+                                // legacy SharpShell registration left by an earlier installation
+                                // so that File Converter is displayed only once.
+                                bool isWindows11OrLater = Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= 22000;
+                                if (isWindows11OrLater)
+                                {
+                                    Helpers.UnregisterExtension(shellExtensionPath);
+                                }
+                                else if (!Helpers.RegisterShellExtension(shellExtensionPath))
                                 {
                                     Debug.LogError(errorCode: 0x0C, $"Failed to register shell extension {shellExtensionPath}.");
                                 }
